@@ -1,0 +1,280 @@
+#VRML_SIM R2022a utf8
+WorldInfo {
+  info [
+    "Benchmark objective: "
+    "learn how to program a robot."
+  ]
+  title "Robot Programming"
+  window "robot_programming"
+  basicTimeStep 20
+  contactProperties [
+    ContactProperties {
+      material2 "thymio body"
+      coulombFriction [
+        0.7
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.13923707410937572 -0.4447592286344423 0.884761134848246 5.52586418875058
+  position -1.9088891851256258 0.8344955935631746 0.6447901447285592
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+CircleArena {
+  wallThickness 0.05
+}
+RobotProgrammingBenchmark {
+}
+Transform {
+  translation -0.25 0 0
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+        baseColorMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/samples/robotbenchmark/robot_programming/worlds/textures/target.png"
+          ]
+        }
+        roughness 0.5
+        metalness 0
+      }
+      geometry IndexedFaceSet {
+        coord Coordinate {
+          point [
+            -0.125 -0.125 0.0001
+            0.125 -0.125 0.0001
+            0.125 0.125 0.0001
+            -0.125 0.125 0.0001
+          ]
+        }
+        coordIndex [
+          0, 1, 2, 3
+        ]
+      }
+    }
+  ]
+}
+Robot {
+  translation 0 0 0.1
+  children [
+    DEF front_left DistanceSensor {
+      translation 0.05 0.05 -0.07
+      rotation 0 0 1 0.523599
+      children [
+        DEF front_left_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "distance sensor front left"
+      boundingObject USE front_left_sensor
+      physics Physics {
+      }
+    }
+    DEF front_right DistanceSensor {
+      translation 0.0473205 -0.05 -0.07
+      rotation 0 0 1 -0.523595307179586
+      children [
+        DEF front_right_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "distance sensor front right"
+      boundingObject USE front_right_sensor
+      physics Physics {
+      }
+    }
+    DEF front_middle DistanceSensor {
+      translation 0.06 0 -0.07
+      rotation 0 1 0 0
+      children [
+        DEF sensorbody Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      boundingObject USE sensorbody
+      physics Physics {
+      }
+    }
+    DEF Schulter_3 HingeJoint {
+      jointParameters HingeJointParameters {
+      }
+      device [
+        RotationalMotor {
+        }
+      ]
+      endPoint Solid {
+        translation -0.12 0 -7.34639e-08
+        rotation 0 1 0 1.5708
+        children [
+          HingeJoint {
+            jointParameters HingeJointParameters {
+            }
+            device [
+              RotationalMotor {
+              }
+            ]
+            endPoint Solid {
+              translation 0 0 -0.14
+              children [
+                DEF Unterarm_3 Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Capsule {
+                    height 0.1
+                    radius 0.02
+                  }
+                }
+              ]
+              boundingObject USE Unterarm_3
+              physics Physics {
+              }
+            }
+          }
+          DEF Oberarm_3 Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.1
+              radius 0.02
+            }
+          }
+        ]
+        boundingObject USE Unterarm_3
+        physics Physics {
+        }
+      }
+    }
+    DEF Schulter_2 HingeJoint {
+      jointParameters HingeJointParameters {
+      }
+      device [
+        RotationalMotor {
+        }
+      ]
+      endPoint Solid {
+        translation 0 -0.11 0
+        rotation 1 0 0 1.5708
+        children [
+          DEF Unterarmgelenk_2 HingeJoint {
+            jointParameters HingeJointParameters {
+            }
+            device [
+              RotationalMotor {
+              }
+            ]
+            endPoint Solid {
+              translation 0 0 0.14
+              rotation 0 1 0 0
+              children [
+                DEF Unterarm_2 Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Capsule {
+                    height 0.1
+                    radius 0.02
+                  }
+                }
+              ]
+              name "Unterarm 2"
+              boundingObject USE Unterarm_2
+              physics Physics {
+              }
+            }
+          }
+          DEF Oberarm_2 Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.1
+              radius 0.02
+            }
+          }
+        ]
+        name "Schultergelenk 2(1)"
+        boundingObject USE Oberarm_2
+        physics Physics {
+        }
+      }
+    }
+    DEF RoboterBody Shape {
+      appearance PBRAppearance {
+        baseColor 0.5 1 0.4
+      }
+      geometry Box {
+        size 0.1 0.1 0.2
+      }
+    }
+    DEF Schulter_1 HingeJoint {
+      jointParameters DEF Armgelenk HingeJointParameters {
+      }
+      device [
+        RotationalMotor {
+        }
+      ]
+      endPoint DEF Armglied1 Solid {
+        translation 0 0.12 6.74634e-14
+        rotation 1 0 0 1.5708
+        children [
+          HingeJoint {
+            jointParameters HingeJointParameters {
+            }
+            device [
+              RotationalMotor {
+              }
+            ]
+            endPoint DEF Unterarm Solid {
+              translation 0 0 -0.14
+              children [
+                DEF Unterarm Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Capsule {
+                    height 0.1
+                    radius 0.02
+                  }
+                }
+              ]
+              boundingObject USE Unterarm
+              physics Physics {
+              }
+            }
+          }
+          DEF Arm_1 Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.1
+              radius 0.02
+            }
+          }
+        ]
+        name "Oberarm1"
+        boundingObject USE Arm_1
+        physics Physics {
+        }
+      }
+    }
+  ]
+  name "MyRob"
+  boundingObject USE RoboterBody
+  physics Physics {
+  }
+  controller "move"
+}
