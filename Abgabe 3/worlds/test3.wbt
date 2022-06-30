@@ -17,8 +17,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.13923707410937572 -0.4447592286344423 0.884761134848246 5.52586418875058
-  position -1.9088891851256258 0.8344955935631746 0.6447901447285592
+  orientation 0.3868899744892914 -0.030340516682625548 -0.921626605891511 3.8521914226739895
+  position 1.3260241423509638 -0.6146435896405857 1.173406078770179
 }
 TexturedBackground {
 }
@@ -61,7 +61,48 @@ Transform {
 }
 Robot {
   translation 0 0 0.1
+  rotation 0 1 0 0
   children [
+    DEF right DistanceSensor {
+      translation 0 -0.05 -0.07
+      rotation 0 0 1 -1.5707953071795862
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "distance sensor(1)"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.01 0.01 0.01
+        }
+      }
+      physics Physics {
+      }
+    }
+    DEF left DistanceSensor {
+      translation 0 0.05 -0.07
+      rotation 0 0 1 1.5708
+      children [
+        DEF left_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "distance sensor left"
+      boundingObject USE left_sensor
+      physics Physics {
+      }
+    }
     DEF front_left DistanceSensor {
       translation 0.05 0.05 -0.07
       rotation 0 0 1 0.523599
@@ -132,6 +173,7 @@ Robot {
             ]
             endPoint Solid {
               translation 0 0 -0.14
+              rotation 1 0 0 0
               children [
                 DEF Unterarm_3 Shape {
                   appearance PBRAppearance {
@@ -181,7 +223,7 @@ Robot {
             ]
             endPoint Solid {
               translation 0 0 0.14
-              rotation 0 1 0 0
+              rotation 1 0 0 0
               children [
                 DEF Unterarm_2 Shape {
                   appearance PBRAppearance {
@@ -241,6 +283,7 @@ Robot {
             ]
             endPoint DEF Unterarm Solid {
               translation 0 0 -0.14
+              rotation 1 0 0 0
               children [
                 DEF Unterarm Shape {
                   appearance PBRAppearance {
