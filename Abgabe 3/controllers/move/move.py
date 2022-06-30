@@ -18,7 +18,7 @@ sys.stderr.write("This is a sample error message.\n")
 robot.getDevice("motor.left").setPosition(target)
 robot.getDevice("motor.right").setPosition(target)
 
-class Robot():
+"""class Robot():
     def __init__(
         gen,
         prob_mut,
@@ -32,4 +32,4 @@ class Robot():
         super(Robot, self).__init__()
         def calc_fitness()
             pass
-
+"""
