@@ -16,6 +16,7 @@ sys.stderr.write("This is a sample error message.\n")
 
 # Set the target position of the left and right wheels motors.
 robot.getDevice("motor.left").setPosition(target)
+
 robot.getDevice("motor.right").setPosition(target)
 
 """class Robot():

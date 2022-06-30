@@ -17,8 +17,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.26685814368113703 -0.5914651670175777 0.7608913768442421 4.668454435742845
-  position -0.8761297721155895 1.49204965452984 2.2608544930783707
+  orientation -0.4120645234079461 -0.42011467796911706 0.8085211722048394 4.089397661911631
+  position 0.7343556993173073 1.1045767791125463 2.569456734165578
 }
 TexturedBackground {
 }
@@ -175,6 +175,7 @@ Robot {
       }
       device [
         RotationalMotor {
+          name "shoulder3"
         }
       ]
       endPoint Solid {
@@ -186,6 +187,7 @@ Robot {
             }
             device [
               RotationalMotor {
+                name "elle3"
               }
             ]
             endPoint Solid {
@@ -225,17 +227,19 @@ Robot {
       }
       device [
         RotationalMotor {
+          name "shoulder2"
         }
       ]
       endPoint Solid {
-        translation 0 -0.11 0
-        rotation 1 0 0 1.5708
+        translation -0.0524265 -0.113178 -7.7348e-08
+        rotation 0.9351132545462786 -0.25056206820525934 -0.25056306820553154 1.63784
         children [
           DEF Unterarmgelenk_2 HingeJoint {
             jointParameters HingeJointParameters {
             }
             device [
               RotationalMotor {
+                name "elle2"
               }
             ]
             endPoint Solid {
@@ -285,17 +289,19 @@ Robot {
       }
       device [
         RotationalMotor {
+          name "shoulder1"
         }
       ]
       endPoint DEF Armglied1 Solid {
-        translation 0 0.12 6.74634e-14
-        rotation 1 0 0 1.5708
+        translation -0.0446409 0.11732 9.52602e-09
+        rotation 0.9351132545462786 0.25056206820525934 0.25056306820553154 1.63784
         children [
           HingeJoint {
             jointParameters HingeJointParameters {
             }
             device [
               RotationalMotor {
+                name "elle1"
               }
             ]
             endPoint DEF Unterarm Solid {
@@ -336,5 +342,5 @@ Robot {
   boundingObject USE RoboterBody
   physics Physics {
   }
-  controller "move"
+  controller "robo_controller"
 }
