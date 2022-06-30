@@ -63,7 +63,7 @@ Robot {
   translation 0 0 0.1
   rotation 0 1 0 0
   children [
-    DEF back DistanceSensor {
+    DistanceSensor {
       translation -0.05 0 -0.07
       rotation 0 0 1 3.14159
       children [
@@ -75,12 +75,12 @@ Robot {
           }
         }
       ]
-      name "distance sensor back"
+      name "dsback"
       boundingObject USE back_sensor
       physics Physics {
       }
     }
-    DEF right DistanceSensor {
+    DistanceSensor {
       translation 0 -0.05 -0.07
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -92,7 +92,7 @@ Robot {
           }
         }
       ]
-      name "distance sensor(1)"
+      name "dsright"
       boundingObject Shape {
         appearance PBRAppearance {
         }
@@ -103,7 +103,7 @@ Robot {
       physics Physics {
       }
     }
-    DEF left DistanceSensor {
+    DistanceSensor {
       translation 0 0.05 -0.07
       rotation 0 0 1 1.5708
       children [
@@ -115,12 +115,12 @@ Robot {
           }
         }
       ]
-      name "distance sensor left"
+      name "dsleft"
       boundingObject USE left_sensor
       physics Physics {
       }
     }
-    DEF front_left DistanceSensor {
+    DistanceSensor {
       translation 0.05 0.05 -0.07
       rotation 0 0 1 0.523599
       children [
@@ -132,12 +132,12 @@ Robot {
           }
         }
       ]
-      name "distance sensor front left"
+      name "dsfrontright"
       boundingObject USE front_left_sensor
       physics Physics {
       }
     }
-    DEF front_right DistanceSensor {
+    DistanceSensor {
       translation 0.0473205 -0.05 -0.07
       rotation 0 0 1 -0.523595307179586
       children [
@@ -149,12 +149,12 @@ Robot {
           }
         }
       ]
-      name "distance sensor front right"
+      name "dsfrontleft"
       boundingObject USE front_right_sensor
       physics Physics {
       }
     }
-    DEF front_middle DistanceSensor {
+    DistanceSensor {
       translation 0.06 0 -0.07
       rotation 0 1 0 0
       children [
@@ -166,6 +166,7 @@ Robot {
           }
         }
       ]
+      name "dsfrontmiddle"
       boundingObject USE sensorbody
       physics Physics {
       }

@@ -12,19 +12,21 @@ timestep = int(10)
     
 maxMotorVelocity = 6
 hingejoints = []
-hgnames = ['shoulder1', 'shoulder2', 'shoulder33', 'elle1', 'elle2', 'elle3']
+hgnames = ['shoulder1', 'shoulder2', 'shoulder3']
 for name in hgnames:
     hingejoints.append(robot.getDevice(name))
 speed = -1.5  # [rad/s]
-hingejoints[0].setPosition(float('inf'))
-hingejoints[0].setVelocity(speed)    
-
-# You should insert a getDevice-like function in order to get the
-# instance of a device of the robot. Something like:
-#  motor = robot.getDevice('motorname')
-#  ds = robot.getDevice('dsname')
-#  ds.enable(timestep)
-
+for idx,name in enumerate(hingejoints):
+    hingejoints[idx].setPosition(float('inf'))
+    hingejoints[idx].setVelocity(speed)    
+sensors=[]    
+sensor_names=['dsfrontmiddle','dsfrontright','dsfrontleft','dsleft','dsright','dsback']
+for s in sensor_names:
+    sensors.append(robot.getDevice(s))
+    
+for s in sensors:
+    print(s)
+    
 # Main loop:
 # - perform simulation steps until Webots is stopping the controller
 while robot.step(timestep) != -1:
