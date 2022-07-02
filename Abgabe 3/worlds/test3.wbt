@@ -17,8 +17,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.4120645234079461 -0.42011467796911706 0.8085211722048394 4.089397661911631
-  position 0.7343556993173073 1.1045767791125463 2.569456734165578
+  orientation -0.6086061272948324 0.06082849837129816 0.791137456833564 2.6383938823988062
+  position 0.6910768115489996 -0.9620169200769647 2.3642526158746993
 }
 TexturedBackground {
 }
@@ -63,6 +63,190 @@ Robot {
   translation 0 0 0.1
   rotation 0 1 0 0
   children [
+    DEF armback Hinge2Joint {
+      jointParameters HingeJointParameters {
+        axis 0 0 1
+        anchor -0.12 0 -0.03
+      }
+      jointParameters2 JointParameters {
+      }
+      device [
+        RotationalMotor {
+          name "shoulderback"
+        }
+      ]
+      device2 [
+        PositionSensor {
+          name "posback"
+        }
+      ]
+      endPoint Solid {
+        translation -0.12 0 -0.03
+        rotation 0 -0.9999999999999999 0 1.5707953071795862
+        children [
+          HingeJoint {
+            jointParameters HingeJointParameters {
+            }
+            device [
+              RotationalMotor {
+                name "motorkneeback"
+              }
+            ]
+            endPoint Solid {
+              translation 0 0 0.14
+              rotation 1 0 0 0
+              children [
+                DEF knee3 Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Capsule {
+                    height 0.1
+                    radius 0.02
+                  }
+                }
+              ]
+              boundingObject USE knee3
+              physics Physics {
+              }
+            }
+          }
+          DEF arm3 Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.1
+              radius 0.02
+            }
+          }
+        ]
+        name "solid(2)"
+        boundingObject USE arm3
+        physics Physics {
+        }
+      }
+    }
+    DEF armright Hinge2Joint {
+      jointParameters HingeJointParameters {
+        axis 0 0 1
+        anchor 0.09359595736831719 -0.08728566565551599 0.015611440921971947
+      }
+      jointParameters2 JointParameters {
+      }
+      device [
+        RotationalMotor {
+          name "shoulderright"
+        }
+      ]
+      device2 [
+        PositionSensor {
+          name "posright"
+        }
+      ]
+      endPoint Solid {
+        translation 2.7755575615628914e-17 -0.12 -0.0400001
+        rotation 1 -3.92522393763976e-17 -4.6121381267267175e-16 1.570799999999999
+        children [
+          HingeJoint {
+            jointParameters HingeJointParameters {
+            }
+            device [
+              DEF motorkneeright RotationalMotor {
+              }
+            ]
+            endPoint Solid {
+              translation 0 2.5382482618890235e-08 0.13999999999999768
+              rotation -1 0 0 1.812804499357409e-07
+              children [
+                DEF knie Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Capsule {
+                    height 0.1
+                    radius 0.02
+                  }
+                }
+              ]
+              boundingObject USE knie
+              physics Physics {
+              }
+            }
+          }
+          DEF armright Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.1
+              radius 0.02
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE armright
+        physics Physics {
+        }
+      }
+    }
+    DEF armleft Hinge2Joint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0 0.12 -0.04
+      }
+      jointParameters2 JointParameters {
+      }
+      device [
+        RotationalMotor {
+          name "shoulderleft"
+        }
+      ]
+      device2 [
+        PositionSensor {
+          name "posleft"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.12 -0.04
+        rotation -0.9999999999999999 -7.850466295647712e-17 7.850466295647712e-17 1.570795307179586
+        children [
+          HingeJoint {
+            jointParameters HingeJointParameters {
+            }
+            device [
+              RotationalMotor {
+                name "motorkneeleft"
+              }
+            ]
+            endPoint Solid {
+              translation 0 1.0841910544934986e-07 0.13999999999995819
+              rotation 0.9999999999999999 0 0 2.2302015940987725e-07
+              children [
+                DEF knee1 Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Capsule {
+                    height 0.1
+                    radius 0.02
+                  }
+                }
+              ]
+              boundingObject USE knee1
+              physics Physics {
+              }
+            }
+          }
+          DEF armlaft Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.1
+              radius 0.02
+            }
+          }
+        ]
+        boundingObject USE armlaft
+        physics Physics {
+        }
+      }
+    }
     DistanceSensor {
       translation -0.05 0 -0.07
       rotation 0 0 1 3.14159
@@ -171,171 +355,12 @@ Robot {
       physics Physics {
       }
     }
-    DEF Schulter_3 HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      device [
-        RotationalMotor {
-          name "shoulder3"
-        }
-      ]
-      endPoint Solid {
-        translation -0.12 0 -7.34639e-08
-        rotation 0 1 0 1.5708
-        children [
-          HingeJoint {
-            jointParameters HingeJointParameters {
-            }
-            device [
-              RotationalMotor {
-                name "elle3"
-              }
-            ]
-            endPoint Solid {
-              translation 0 0 -0.14
-              rotation 1 0 0 0
-              children [
-                DEF Unterarm_3 Shape {
-                  appearance PBRAppearance {
-                  }
-                  geometry Capsule {
-                    height 0.1
-                    radius 0.02
-                  }
-                }
-              ]
-              boundingObject USE Unterarm_3
-              physics Physics {
-              }
-            }
-          }
-          DEF Oberarm_3 Shape {
-            appearance PBRAppearance {
-            }
-            geometry Capsule {
-              height 0.1
-              radius 0.02
-            }
-          }
-        ]
-        boundingObject USE Unterarm_3
-        physics Physics {
-        }
-      }
-    }
-    DEF Schulter_2 HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      device [
-        RotationalMotor {
-          name "shoulder2"
-        }
-      ]
-      endPoint Solid {
-        translation -0.0524265 -0.113178 -7.7348e-08
-        rotation 0.9351132545462786 -0.25056206820525934 -0.25056306820553154 1.63784
-        children [
-          DEF Unterarmgelenk_2 HingeJoint {
-            jointParameters HingeJointParameters {
-            }
-            device [
-              RotationalMotor {
-                name "elle2"
-              }
-            ]
-            endPoint Solid {
-              translation 0 0 0.14
-              rotation 1 0 0 0
-              children [
-                DEF Unterarm_2 Shape {
-                  appearance PBRAppearance {
-                  }
-                  geometry Capsule {
-                    height 0.1
-                    radius 0.02
-                  }
-                }
-              ]
-              name "Unterarm 2"
-              boundingObject USE Unterarm_2
-              physics Physics {
-              }
-            }
-          }
-          DEF Oberarm_2 Shape {
-            appearance PBRAppearance {
-            }
-            geometry Capsule {
-              height 0.1
-              radius 0.02
-            }
-          }
-        ]
-        name "Schultergelenk 2(1)"
-        boundingObject USE Oberarm_2
-        physics Physics {
-        }
-      }
-    }
     DEF RoboterBody Shape {
       appearance PBRAppearance {
         baseColor 0.5 1 0.4
       }
       geometry Box {
         size 0.1 0.1 0.2
-      }
-    }
-    DEF Schulter_1 HingeJoint {
-      jointParameters DEF Armgelenk HingeJointParameters {
-      }
-      device [
-        RotationalMotor {
-          name "shoulder1"
-        }
-      ]
-      endPoint DEF Armglied1 Solid {
-        translation -0.0446409 0.11732 9.52602e-09
-        rotation 0.9351132545462786 0.25056206820525934 0.25056306820553154 1.63784
-        children [
-          HingeJoint {
-            jointParameters HingeJointParameters {
-            }
-            device [
-              RotationalMotor {
-                name "elle1"
-              }
-            ]
-            endPoint DEF Unterarm Solid {
-              translation 0 0 -0.14
-              rotation 1 0 0 0
-              children [
-                DEF Unterarm Shape {
-                  appearance PBRAppearance {
-                  }
-                  geometry Capsule {
-                    height 0.1
-                    radius 0.02
-                  }
-                }
-              ]
-              boundingObject USE Unterarm
-              physics Physics {
-              }
-            }
-          }
-          DEF Arm_1 Shape {
-            appearance PBRAppearance {
-            }
-            geometry Capsule {
-              height 0.1
-              radius 0.02
-            }
-          }
-        ]
-        name "Oberarm1"
-        boundingObject USE Arm_1
-        physics Physics {
-        }
       }
     }
   ]
