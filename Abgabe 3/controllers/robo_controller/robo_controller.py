@@ -12,10 +12,10 @@ timestep = int(10)
     
 maxMotorVelocity = 6
 hingejoints = []
-hgnames = ['shoulderleft']
+hgnames = ['shoulderright', 'shoulderleft']
 for name in hgnames:
     hingejoints.append(robot.getDevice(name))
-speed = 2  # [rad/s]
+speed = -2  # [rad/s]
 for idx,name in enumerate(hingejoints):
     hingejoints[idx].setPosition(float('inf'))
     hingejoints[idx].setVelocity(speed)    
