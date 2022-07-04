@@ -17,8 +17,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.2610486922873695 0.13068956207741658 -0.9564380892765968 2.9686481781559495
-  position 3.0401581822681227 -0.052490910749965924 1.1325877965410942
+  orientation 0.11187661247696942 -0.10529344531423507 0.9881279846024685 3.0988049065512233
+  position 0.4644122934266042 0.23580292977931047 0.18621759961264792
 }
 TexturedBackground {
 }
@@ -26,6 +26,85 @@ TexturedBackgroundLight {
 }
 CircleArena {
   wallThickness 0.05
+}
+DEF step Solid {
+  translation -0.17 0 0
+  children [
+    DEF step Shape {
+      appearance PBRAppearance {
+      }
+      geometry Box {
+        size 0.3 0.8 0.005
+      }
+    }
+  ]
+  boundingObject USE step
+  physics Physics {
+  }
+}
+DEF step Solid {
+  translation 0.13 0 0.01
+  children [
+    DEF step Shape {
+      appearance PBRAppearance {
+      }
+      geometry Box {
+        size 0.3 0.8 0.0025
+      }
+    }
+  ]
+  name "solid(1)"
+  boundingObject USE step
+  physics Physics {
+  }
+}
+DEF step Solid {
+  translation 0.43 0 0.0135
+  children [
+    DEF step Shape {
+      appearance PBRAppearance {
+      }
+      geometry Box {
+        size 0.3 0.8 0.02
+      }
+    }
+  ]
+  name "solid(2)"
+  boundingObject USE step
+  physics Physics {
+  }
+}
+DEF step Solid {
+  translation 0.73 -0.2 0.02
+  children [
+    DEF step Shape {
+      appearance PBRAppearance {
+      }
+      geometry Box {
+        size 0.3 0.4 0.029
+      }
+    }
+  ]
+  name "solid(3)"
+  boundingObject USE step
+  physics Physics {
+  }
+}
+DEF step Solid {
+  translation 0.73 0.2 0.02
+  children [
+    DEF step Shape {
+      appearance PBRAppearance {
+      }
+      geometry Box {
+        size 0.3 0.4 0.04
+      }
+    }
+  ]
+  name "solid(4)"
+  boundingObject USE step
+  physics Physics {
+  }
 }
 RobotProgrammingBenchmark {
 }
@@ -60,9 +139,26 @@ Transform {
   ]
 }
 Robot {
-  translation 0 0 0.11
+  translation -0.88 0 0.11
   rotation 0 1 0 0
   children [
+    LightSensor {
+      translation 0.08 0 -0.09
+      rotation 0 0 1 -1.5707953071795862
+      children [
+        DEF cam Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "light"
+      boundingObject USE cam
+      physics Physics {
+      }
+    }
     DEF armleft HingeJoint {
       jointParameters HingeJointParameters {
         axis 0 1 0
