@@ -17,21 +17,26 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.11187661247696942 -0.10529344531423507 0.9881279846024685 3.0988049065512233
-  position 0.4644122934266042 0.23580292977931047 0.18621759961264792
+  orientation -0.31881170067325465 -0.0752102702057899 0.944829357487054 2.944397367232125
+  position 1.6469094537359554 -0.522861229308732 1.2886017066641835
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
 CircleArena {
+  floorAppearance Parquetry {
+    type "chequered"
+    colorOverride 0 0.1 1
+  }
   wallThickness 0.05
 }
 DEF step Solid {
-  translation -0.17 0 0
+  translation -0.44 0 0
   children [
     DEF step Shape {
       appearance PBRAppearance {
+        baseColor 0 0 0
       }
       geometry Box {
         size 0.3 0.8 0.005
@@ -43,10 +48,11 @@ DEF step Solid {
   }
 }
 DEF step Solid {
-  translation 0.13 0 0.01
+  translation -0.14 0 0.01
   children [
     DEF step Shape {
       appearance PBRAppearance {
+        baseColor 0 0 0
       }
       geometry Box {
         size 0.3 0.8 0.0025
@@ -54,54 +60,6 @@ DEF step Solid {
     }
   ]
   name "solid(1)"
-  boundingObject USE step
-  physics Physics {
-  }
-}
-DEF step Solid {
-  translation 0.43 0 0.0135
-  children [
-    DEF step Shape {
-      appearance PBRAppearance {
-      }
-      geometry Box {
-        size 0.3 0.8 0.02
-      }
-    }
-  ]
-  name "solid(2)"
-  boundingObject USE step
-  physics Physics {
-  }
-}
-DEF step Solid {
-  translation 0.73 -0.2 0.02
-  children [
-    DEF step Shape {
-      appearance PBRAppearance {
-      }
-      geometry Box {
-        size 0.3 0.4 0.029
-      }
-    }
-  ]
-  name "solid(3)"
-  boundingObject USE step
-  physics Physics {
-  }
-}
-DEF step Solid {
-  translation 0.73 0.2 0.02
-  children [
-    DEF step Shape {
-      appearance PBRAppearance {
-      }
-      geometry Box {
-        size 0.3 0.4 0.04
-      }
-    }
-  ]
-  name "solid(4)"
   boundingObject USE step
   physics Physics {
   }
@@ -139,23 +97,10 @@ Transform {
   ]
 }
 Robot {
-  translation -0.88 0 0.11
-  rotation 0 1 0 0
+  translation -0.88 -0.04 0.11
+  rotation 0 0 1 0.261799
   children [
-    LightSensor {
-      translation 0.08 0 -0.09
-      rotation 0 0 1 -1.5707953071795862
-      children [
-        DEF cam Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.01 0.01 0.01
-          }
-        }
-      ]
-      name "light"
-      boundingObject USE cam
+    Accelerometer {
       physics Physics {
       }
     }
@@ -170,8 +115,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 0 -0.09 0
-        rotation 0 -1 0 1.3778199999999998
+        translation 8.28348856540072e-05 -0.09043511341150631 -4.240445902158912e-05
+        rotation 0.9931319782372292 0.10628182860394626 0.04891877667326952 6.276567084617488
         children [
           DEF armleft Shape {
             appearance PBRAppearance {
@@ -199,8 +144,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation -0.0001675389841020431 0.0901409657788438 -0.00016255961257156113
-        rotation 0.0003321499747621573 -0.9999999240167312 0.00020406598449439827 3.111595307179586
+        translation -0.0002566393740234434 0.09056935525461955 -0.0001312167535161971
+        rotation -0.003447316101347279 -0.9999891790430857 0.0031237490989223056 1.5715138900567776
         children [
           DEF armright Shape {
             appearance PBRAppearance {
@@ -234,7 +179,7 @@ Robot {
       }
     }
     DistanceSensor {
-      translation 0 -0.05 -0.07
+      translation 6.11772e-08 -0.11 0
       rotation 0 0 1 -1.5707953071795862
       children [
         Shape {
@@ -257,7 +202,7 @@ Robot {
       }
     }
     DistanceSensor {
-      translation 0 0.05 -0.07
+      translation -2.20392e-07 0.11 0
       rotation 0 0 1 1.5708
       children [
         DEF left_sensor Shape {
@@ -274,8 +219,8 @@ Robot {
       }
     }
     DistanceSensor {
-      translation 0.05 0.05 -0.07
-      rotation 0 0 1 0.523599
+      translation 0.0736556 0.0618494 -0.07
+      rotation 0 0 1 0.654498
       children [
         DEF front_left_sensor Shape {
           appearance PBRAppearance {
@@ -291,8 +236,8 @@ Robot {
       }
     }
     DistanceSensor {
-      translation 0.0473205 -0.05 -0.07
-      rotation 0 0 1 -0.523595307179586
+      translation 0.0753783 -0.062424 -0.07
+      rotation 0 0 1 -0.785395307179586
       children [
         DEF front_right_sensor Shape {
           appearance PBRAppearance {
@@ -308,10 +253,10 @@ Robot {
       }
     }
     DistanceSensor {
-      translation 0.06 0 -0.07
+      translation 0.08 0 -0.07
       rotation 0 1 0 0
       children [
-        DEF sensorbody Shape {
+        Shape {
           appearance PBRAppearance {
           }
           geometry Box {
@@ -320,9 +265,21 @@ Robot {
         }
       ]
       name "dsfrontmiddle"
-      boundingObject USE sensorbody
-      physics Physics {
-      }
+    }
+    DEF dsstart DistanceSensor {
+      translation 0.0729289 0 -0.0829289
+      rotation 0 1 0 0.785398
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "start"
+      type "infra-red"
     }
     DEF RoboterBody Shape {
       appearance PBRAppearance {
@@ -338,4 +295,36 @@ Robot {
   physics Physics {
   }
   controller "robo_controller"
+}
+Solid {
+  translation -0.74 0 0
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0 0
+      }
+      geometry Box {
+        size 0.1 1 0.0005
+      }
+    }
+  ]
+  name "solid(5)"
+}
+Solid {
+  translation 0.85 0 0.04
+  rotation 0 1 0 0
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0 0
+      }
+      geometry Box {
+        size 0.1 0.7 0.0005
+      }
+    }
+  ]
+  name "solid(6)"
+}
+Rock17cm {
+  translation 0.48 -0.14 0
 }

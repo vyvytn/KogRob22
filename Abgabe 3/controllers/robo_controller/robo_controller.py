@@ -2,7 +2,7 @@
 
 # You may need to import some classes of the controller module. Ex:
 #  from controller import Robot, Motor, DistanceSensor
-from controller import Robot, Motor
+from controller import Robot, Motor, Supervisor
 
 # create the Robot instance.
 robot = Robot()
@@ -11,6 +11,7 @@ robot = Robot()
 timestep = int(10)
     
 maxMotorVelocity = 6
+
 hingejoints = []
 hgnames = ['shoulderright', 'shoulderleft']
 for name in hgnames:
@@ -20,18 +21,16 @@ for idx,name in enumerate(hingejoints):
     hingejoints[idx].setPosition(float('inf'))
     hingejoints[idx].setVelocity(0.0)    
     hingejoints[idx].enableForceFeedback(1)
-cam=robot.getDevice('light')
-cam.enable(timestep)    
+ 
 sensors=[]    
-sensor_names=['dsfrontmiddle','dsfrontright','dsfrontleft','dsleft','dsright','dsback']
+sensor_names=['dsfrontmiddle','dsfrontright','dsfrontleft','dsleft','dsright','dsback', 'start']
 for i,s in enumerate(sensor_names):
     sensors.append(robot.getDevice(s))
     sensors[i].enable(timestep)
     
-for s in sensors:
-    print(s)
 
-
+acc=robot.getDevice('accelerometer')
+acc.enable(timestep)
 
 MAX_SPEED = 6.28
 
@@ -42,28 +41,47 @@ rightSpeed = 0.5 * MAX_SPEED
 def fitness():
     pass
 
+def detect_start():
+    #sensor_values[6]<300:
+    pass
+    
+def detect_fall():
+    #if acc.getValues()[2]<=0:
+    pass
 
 # Main loop:
 # - perform simulation steps until Webots is stopping the controller
 while robot.step(timestep) != -1:
-    for idx,name in enumerate(hingejoints):
-        print(hingejoints[idx].getForceFeedback())
     # read sensors outputs
     sensor_values = []
     for i,s in enumerate(sensors):
         sensor_values.append(sensors[i].getValue())
-        print('CAM', cam.getValue())
+  
+    if sensor_values[6]<300:
+        print(sensor_values[6])
+        
+    #detect falling
+    if acc.getValues()[2]<=0:
+        print(acc.getValues())
+        
     # detect obstacles
-    right_obstacle = sensor_values[1] > 80.0 or sensor_values[4] > 80.0 
-    left_obstacle = sensor_values[2] > 80.0 or sensor_values[3] > 80.0 
+    right_obstacle = sensor_values[1] < 500.0 or sensor_values[4] < 500.0 
+    left_obstacle = sensor_values[2] < 500.0 or sensor_values[3] < 500.0 
     
     if left_obstacle:
         # turn right
-        leftSpeed  = 0.5 * MAX_SPEED
+        print('LEFT OBSTACLE')
+        leftSpeed  = -MAX_SPEED
+        rightSpeed=0
     elif right_obstacle:
+        print('RIGHT OBSTACLE')
         # turn left
+        leftSpeed=0
+        rightSpeed=-MAX_SPEED
+    else:
+        leftSpeed  = 0.5 * MAX_SPEED
         rightSpeed = 0.5 * MAX_SPEED
-        
+    
     # write actuators inputs
     hingejoints[1].setVelocity(leftSpeed)
     hingejoints[0].setVelocity(rightSpeed)
@@ -76,5 +94,5 @@ while robot.step(timestep) != -1:
     # Enter here functions to send actuator commands, like:
     #  motor.setPosition(10.0)
     pass
-
+#simulationReset() 
 # Enter here exit cleanup code.
