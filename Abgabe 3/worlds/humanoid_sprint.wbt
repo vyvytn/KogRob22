@@ -103,8 +103,8 @@ DEF GRASS Solid {
   model "floor"
   locked TRUE
 }
-Robot {
-  translation -5.16 -0.19 0.1
+DEF Robot Robot {
+  translation -5.21 -0.14 0.1
   rotation 0 1 0 0
   children [
     DEF armright Hinge2Joint {
@@ -124,8 +124,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 4.163336342344337e-17 -0.17000000000000004 0.0399999
-        rotation 1 -3.92522393763976e-17 -4.6121381267267175e-16 1.570799999999999
+        translation 4.171665427066013e-17 -0.17000000000000007 0.0399999
+        rotation 1 -3.915708159101289e-17 -4.607956604547773e-16 1.570799999999999
         children [
           DEF armright Shape {
             appearance PBRAppearance {
@@ -160,8 +160,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation -6.938893903907228e-18 0.17 0.04
-        rotation -0.9999999999999999 -7.850466295647712e-17 7.850466295647712e-17 1.570795307179586
+        translation -7.041358955504738e-18 0.1700000000000001 0.03999999999999999
+        rotation -0.9999999999999999 -7.840024969030136e-17 7.794442199847306e-17 1.5707953071795855
         children [
           DEF armlaft Shape {
             appearance PBRAppearance {
@@ -294,9 +294,14 @@ Robot {
       }
     }
   ]
-  name "MyRob"
+  name "My_Robo"
   boundingObject USE RoboterBody
   physics Physics {
   }
   controller "walking"
+}
+Robot {
+  name "supervisor"
+  controller "supervisor_controller"
+  supervisor TRUE
 }
