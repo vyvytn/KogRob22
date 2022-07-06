@@ -2,7 +2,7 @@
 
 # You may need to import some classes of the controller module. Ex:
 #  from controller import Robot, Motor, DistanceSensor
-from controller import Robot, Motor, Supervisor
+from controller import Robot, Motor
 
 # create the Robot instance.
 robot = Robot()
@@ -11,7 +11,7 @@ robot = Robot()
 timestep = int(10)
     
 maxMotorVelocity = 6
-
+is_running= True
 hingejoints = []
 hgnames = ['shoulderright', 'shoulderleft']
 for name in hgnames:
@@ -43,7 +43,8 @@ def fitness():
 
 def detect_start():
     #sensor_values[6]<300:
-    pass
+    is_running=not is_running
+    return is_running
     
 def detect_fall():
     #if acc.getValues()[2]<=0:
@@ -58,7 +59,8 @@ while robot.step(timestep) != -1:
         sensor_values.append(sensors[i].getValue())
   
     if sensor_values[6]<300:
-        print(sensor_values[6])
+        print('DETECTED red')
+        detect_start()
         
     #detect falling
     if acc.getValues()[2]<=0:

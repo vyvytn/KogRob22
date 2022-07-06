@@ -98,7 +98,7 @@ Transform {
 }
 Robot {
   translation -0.88 -0.04 0.11
-  rotation 0 0 1 0.261799
+  rotation 0 0 1 -5.307179586466759e-06
   children [
     Accelerometer {
       physics Physics {
@@ -324,7 +324,4 @@ Solid {
     }
   ]
   name "solid(6)"
-}
-Rock17cm {
-  translation 0.48 -0.14 0
 }
