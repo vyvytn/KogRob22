@@ -17,8 +17,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.6086061272948324 0.06082849837129816 0.791137456833564 2.6383938823988062
-  position 0.6910768115489996 -0.9620169200769647 2.3642526158746993
+  orientation -0.44457099533208216 -0.06591689647306191 0.8933149460681834 2.945627174058024
+  position 1.6104169081848057 -0.3113473451894956 1.4209788535877246
 }
 TexturedBackground {
 }
@@ -63,68 +63,6 @@ Robot {
   translation 0 0 0.1
   rotation 0 1 0 0
   children [
-    DEF armback Hinge2Joint {
-      jointParameters HingeJointParameters {
-        axis 0 0 1
-        anchor -0.12 0 -0.03
-      }
-      jointParameters2 JointParameters {
-      }
-      device [
-        RotationalMotor {
-          name "shoulderback"
-        }
-      ]
-      device2 [
-        PositionSensor {
-          name "posback"
-        }
-      ]
-      endPoint Solid {
-        translation -0.12 0 -0.03
-        rotation 0 -0.9999999999999999 0 1.5707953071795862
-        children [
-          HingeJoint {
-            jointParameters HingeJointParameters {
-            }
-            device [
-              RotationalMotor {
-                name "motorkneeback"
-              }
-            ]
-            endPoint Solid {
-              translation 0 0 0.14
-              rotation 1 0 0 0
-              children [
-                DEF knee3 Shape {
-                  appearance PBRAppearance {
-                  }
-                  geometry Capsule {
-                    height 0.1
-                    radius 0.02
-                  }
-                }
-              ]
-              boundingObject USE knee3
-              physics Physics {
-              }
-            }
-          }
-          DEF arm3 Shape {
-            appearance PBRAppearance {
-            }
-            geometry Capsule {
-              height 0.1
-              radius 0.02
-            }
-          }
-        ]
-        name "solid(2)"
-        boundingObject USE arm3
-        physics Physics {
-        }
-      }
-    }
     DEF armright Hinge2Joint {
       jointParameters HingeJointParameters {
         axis 0 0 1
@@ -143,39 +81,14 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 2.7755575615628914e-17 -0.12 -0.0400001
+        translation 3.64889e-17 -0.17 0.0399999
         rotation 1 -3.92522393763976e-17 -4.6121381267267175e-16 1.570799999999999
         children [
-          HingeJoint {
-            jointParameters HingeJointParameters {
-            }
-            device [
-              DEF motorkneeright RotationalMotor {
-              }
-            ]
-            endPoint Solid {
-              translation 0 2.5382482618890235e-08 0.13999999999999768
-              rotation -1 0 0 1.812804499357409e-07
-              children [
-                DEF knie Shape {
-                  appearance PBRAppearance {
-                  }
-                  geometry Capsule {
-                    height 0.1
-                    radius 0.02
-                  }
-                }
-              ]
-              boundingObject USE knie
-              physics Physics {
-              }
-            }
-          }
           DEF armright Shape {
             appearance PBRAppearance {
             }
             geometry Capsule {
-              height 0.1
+              height 0.2
               radius 0.02
             }
           }
@@ -204,40 +117,14 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 0 0.12 -0.04
+        translation -7.85042e-18 0.17 0.04
         rotation -0.9999999999999999 -7.850466295647712e-17 7.850466295647712e-17 1.570795307179586
         children [
-          HingeJoint {
-            jointParameters HingeJointParameters {
-            }
-            device [
-              RotationalMotor {
-                name "motorkneeleft"
-              }
-            ]
-            endPoint Solid {
-              translation 0 1.0841910544934986e-07 0.13999999999995819
-              rotation 0.9999999999999999 0 0 2.2302015940987725e-07
-              children [
-                DEF knee1 Shape {
-                  appearance PBRAppearance {
-                  }
-                  geometry Capsule {
-                    height 0.1
-                    radius 0.02
-                  }
-                }
-              ]
-              boundingObject USE knee1
-              physics Physics {
-              }
-            }
-          }
           DEF armlaft Shape {
             appearance PBRAppearance {
             }
             geometry Capsule {
-              height 0.1
+              height 0.2
               radius 0.02
             }
           }
