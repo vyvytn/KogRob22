@@ -1,71 +1,114 @@
 #VRML_SIM R2022a utf8
 WorldInfo {
   info [
-    "Benchmark objective: "
-    "learn how to program a robot."
+    "The humanoid sprint benchmark aims at programing a NAO robot in Python to run a 10 meter race. "
+    "The goal is to run the 10 meter as fast as possible. "
+    "All the sensors and actuators of the robot can be used to achieve the best performance. "
+    "Records are stored on the challenge web site. "
   ]
-  title "Robot Programming"
-  window "robot_programming"
+  title "Humanoid Sprint"
+  window "humanoid_sprint"
   basicTimeStep 20
+  FPS 20
   contactProperties [
     ContactProperties {
-      material2 "thymio body"
+      material1 "NAO foot material"
       coulombFriction [
-        0.7
+        7
       ]
+      bounce 0.3
+      bounceVelocity 0.003
     }
   ]
 }
 Viewpoint {
-  orientation -0.3050078518485291 0.11029516015443397 0.945941429453882 1.5456074113979348
-  position 0.0417674344961709 -2.4467072122665297 0.5669083251592048
+  orientation -0.0453775182199013 -0.017577934865303874 0.9988152467028493 3.880000989054137
+  position -2.872861838972636 2.262796184115301 0.7908396211803081
 }
 TexturedBackground {
+  texture "noon_cloudy_countryside"
 }
 TexturedBackgroundLight {
+  texture "noon_cloudy_countryside"
+  luminosity 0.4
+  castShadows FALSE
 }
-CircleArena {
-  wallThickness 0.05
+SpotLight {
+  attenuation 0 0 1
+  beamWidth 0.2
+  cutOffAngle 0.7
+  intensity 10
+  location -5 -0.5 4
+  castShadows TRUE
 }
-RobotProgrammingBenchmark {
+SpotLight {
+  attenuation 0 0 1
+  beamWidth 0.2
+  cutOffAngle 0.7
+  intensity 10
+  location 0 -0.5 4
+  castShadows TRUE
 }
-Transform {
-  translation -0.25 0 0
+SpotLight {
+  attenuation 0 0 1
+  beamWidth 0.2
+  cutOffAngle 0.7
+  intensity 10
+  location 5 -0.5 4
+  castShadows TRUE
+}
+DEF TRACK Floor {
+  translation 0 -0.39 0
+  size 11 3
+  tileSize 11 3
+  appearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/samples/robotbenchmark/humanoid_sprint/worlds/textures/nao_10m_track_base_color.jpg"
+      ]
+    }
+    roughness 1
+    roughnessMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/samples/robotbenchmark/humanoid_sprint/worlds/textures/nao_10m_track_roughness.jpg"
+      ]
+    }
+    metalness 0
+    normalMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/samples/robotbenchmark/humanoid_sprint/worlds/textures/nao_10m_track_normal.jpg"
+      ]
+    }
+  }
+}
+DEF GRASS Solid {
+  translation 0 0 -0.005
   children [
     Shape {
-      appearance PBRAppearance {
-        baseColor 0.8 0.8 0.8
-        baseColorMap ImageTexture {
-          url [
-            "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/samples/robotbenchmark/robot_programming/worlds/textures/target.png"
-          ]
+      appearance Grass {
+        colorOverride 0.905486 0.988983 0.47155
+        textureTransform TextureTransform {
+          scale 20 20
         }
-        roughness 0.5
-        metalness 0
       }
-      geometry IndexedFaceSet {
-        coord Coordinate {
-          point [
-            -0.125 -0.125 0.0001
-            0.125 -0.125 0.0001
-            0.125 0.125 0.0001
-            -0.125 0.125 0.0001
-          ]
-        }
-        coordIndex [
-          0, 1, 2, 3
-        ]
+      geometry Cylinder {
+        bottom FALSE
+        height 0.001
+        radius 10
+        side FALSE
       }
     }
   ]
+  name "grass"
+  model "floor"
+  locked TRUE
 }
 Robot {
-  translation 0 0 0.1
+  translation -5.16 -0.19 0.1
   rotation 0 1 0 0
   children [
     DEF armright Hinge2Joint {
       jointParameters HingeJointParameters {
-        axis 0 0 2
         anchor -1.73472e-18 -0.05 0.04
       }
       jointParameters2 JointParameters {
@@ -89,7 +132,7 @@ Robot {
             }
             geometry Capsule {
               height 0.2
-              radius 0.02
+              radius 0.01
             }
           }
         ]
@@ -101,7 +144,7 @@ Robot {
     }
     DEF armleft Hinge2Joint {
       jointParameters HingeJointParameters {
-        axis 0 6 0
+        axis 0 5 0
         anchor 0 0.05 0.05
       }
       jointParameters2 JointParameters {
@@ -125,7 +168,7 @@ Robot {
             }
             geometry Capsule {
               height 0.2
-              radius 0.02
+              radius 0.01
             }
           }
         ]
@@ -255,5 +298,5 @@ Robot {
   boundingObject USE RoboterBody
   physics Physics {
   }
-  controller "robo_controller"
+  controller "walking"
 }
