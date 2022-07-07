@@ -5,7 +5,8 @@ from controller import Robot, Motor, Supervisor, Receiver
 robot = Robot()
 
 # get the time step of the current world.
-timestep =  int(robot.getBasicTimeStep())
+#timestep =  int(robot.getBasicTimeStep())
+timestep =  int(1)
 
 maxMotorVelocity = 6
 speed = 2  # [rad/s]

@@ -24,8 +24,9 @@ def reset_robot():
     rot_field.setSFRotation(start_rot)
 def open_file(file):
 
+    pass
+    
 def start_loop():
-            
     i=0
     while supervisor.step(timestep) != -1:
         i+=1
@@ -33,6 +34,6 @@ def start_loop():
     
        
        
-        pass
-    
+        
+start_loop()    
 # Enter here exit cleanup code.
