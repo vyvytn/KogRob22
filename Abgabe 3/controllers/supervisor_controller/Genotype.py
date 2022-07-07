@@ -6,7 +6,7 @@ class Genotype:
 		self.size = size
 
 	def generate(self):
-		chromosome = np.array
+		chromosome = []
 		for i in range(self.size):
 			chromosome.append(random.uniform(-1, 1))
 		print(chromosome)
