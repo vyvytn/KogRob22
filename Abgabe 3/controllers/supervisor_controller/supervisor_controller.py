@@ -37,26 +37,8 @@ def calc_fitness_weights(weights):
     return individual_fitness
        
 def main():
-    emitter=Emitter
-    genotype=Genotype(40)
-    gen=Generation(genotype, calc_fitness_weights)
-    gen.init_gen()
-    print('GEN',gen.get_gen())
-    # create the Robot instance.
-    supervisor = Supervisor()
-    timestep = int(supervisor.getBasicTimeStep())
-    #emitter = supervisor.getEmitter("emitter")
-    robot= supervisor.getFromDef("Robot")
-    trans_field=robot.getField("translation")
-    rot_field = robot.getField("rotation")
-    start_rot = rot_field.getSFRotation()
-    start_pos=robot.getPosition()
-    
-    
     #run generation and get best weight out of it
-    best_weights =  Generation.Run()
-
-
+    best_weights =  gen.reproduce()
     #emit best weight to Neural Network 
     f = open('weights', 'w')
     weightsJSON = json.dumps(best_weights.tolist())
@@ -66,5 +48,19 @@ def main():
     #tidy up
     reset_robot()
 
+emitter=Emitter
+genotype=Genotype(40)
+gen=Generation(genotype, calc_fitness_weights)
+gen.init_gen()
+# create the Robot instance.
+supervisor = Supervisor()
+timestep = int(supervisor.getBasicTimeStep())
+#emitter = supervisor.getEmitter("emitter")
+robot= supervisor.getFromDef("Robot")
+trans_field=robot.getField("translation")
+rot_field = robot.getField("rotation")
+start_rot = rot_field.getSFRotation()
+start_pos=robot.getPosition()
+    
         
 main()

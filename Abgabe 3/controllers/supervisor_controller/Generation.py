@@ -18,7 +18,8 @@ class Generation:
         self.tournamentSize = tournamentSize
         self.genotype = genotype
         self.fit_func = fit_func
-        self.elite_thresh=elite_thresh
+        self.elite_thresh=elite_thresh,
+        self.generations=generations
 
     def init_gen(self):
         init_weights=[]
@@ -64,7 +65,7 @@ class Generation:
         best_chromosome=0
         return best_chromosome
 
-    def reproducde(self):
+    def reproduce(self):
         init_weights = self.init_gen()
         return self.new_gen(init_weights)
     
