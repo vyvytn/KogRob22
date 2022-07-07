@@ -306,6 +306,11 @@ DEF Robot Robot {
   controller "walking"
 }
 Robot {
+  children [
+    Emitter {
+      translation -5.38 0 0
+    }
+  ]
   name "supervisor"
   controller "supervisor_controller"
   supervisor TRUE
