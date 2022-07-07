@@ -1,26 +1,11 @@
-from controller import Motor, Supervisor, Node
+from controller import Motor, Supervisor, Node, Emitter, Receiver
 from Generation import Generation
 from Genotype import Genotype
-# create the Robot instance.
-
-#Generation = Generation(Genotype(40))
-genotype=Genotype(40)
-gen=Generation(genotype)
-gen.init_gen()
-print('GEN',gen.get_gen())
-supervisor = Supervisor()
-timestep = int(supervisor.getBasicTimeStep())
-#emitter = supervisor.getEmitter("emitter")
-robot= supervisor.getFromDef("Robot")
-trans_field=robot.getField("translation")
-rot_field = robot.getField("rotation")
-start_rot = rot_field.getSFRotation()
-start_pos=robot.getPosition()
-#start_rot=robot.getRotation()
-
+import json
 def fitness_function():
     fitness=0
     cur_pos=robot.getPosition()
+    return cur_pos[0]-start_pos[0]
 
 def reset_robot():
     trans_field.setSFVec3f(start_pos)
@@ -31,14 +16,55 @@ def reset_robot():
 def open_file(file):
     pass
     
-def start_loop():
-    i=0
-    while supervisor.step(timestep) != -1:
-        i+=1
-        print('POSITION',robot.getPosition())
+def calc_fitness_weights(weights):
+
+    weightsJSON = json.dumps(weights.tolist())
+    emitter.send(weightsJSON)
     
-       
-       
+    #start 10 sec timer
+    start_timer = supervisor.getTime()
+    timer = 0.000
+    
+    individual_fitness=0
+    #robo loop
+    while supervisor.step(timestep) != -1:
+        timer= supervisor.getTime() - start_timer
         
-start_loop()    
-# Enter here exit cleanup code.
+        #let robo walk for just 10 sec
+        if timer >10:
+            break
+        individual_fitness=fitness_function()
+    return individual_fitness
+       
+def main():
+    emitter=Emitter
+    genotype=Genotype(40)
+    gen=Generation(genotype, calc_fitness_weights)
+    gen.init_gen()
+    print('GEN',gen.get_gen())
+    # create the Robot instance.
+    supervisor = Supervisor()
+    timestep = int(supervisor.getBasicTimeStep())
+    #emitter = supervisor.getEmitter("emitter")
+    robot= supervisor.getFromDef("Robot")
+    trans_field=robot.getField("translation")
+    rot_field = robot.getField("rotation")
+    start_rot = rot_field.getSFRotation()
+    start_pos=robot.getPosition()
+    
+    
+    #run generation and get best weight out of it
+    best_weights =  Generation.Run()
+
+
+    #emit best weight to Neural Network 
+    f = open('weights', 'w')
+    weightsJSON = json.dumps(best_weights.tolist())
+    f.write(weightsJSON)
+    emitter.send(weightsJSON)
+
+    #tidy up
+    reset_robot()
+
+        
+main()
