@@ -22,8 +22,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.21983911538785386 0.0005363272057626201 -0.9755359940558903 3.1368198967091874
-  position -3.4120937713789 0.30686331658035865 0.515629995919607
+  orientation -0.1448603225387818 -0.6905921880362003 0.7085886795435937 5.707586270878838
+  position -11.927924750235759 2.6202588215295664 4.94735584880098
 }
 TexturedBackground {
   texture "noon_cloudy_countryside"
@@ -109,7 +109,7 @@ DEF Robot Robot {
   children [
     DEF armright Hinge2Joint {
       jointParameters HingeJointParameters {
-        axis -1 2 0
+        axis 0 1 0
         anchor 1.73472e-18 -0.07 0.03
       }
       jointParameters2 JointParameters {
@@ -126,14 +126,14 @@ DEF Robot Robot {
         }
       ]
       endPoint Solid {
-        translation -5.75241e-05 -0.120427 0.0300074
+        translation -4.08665e-05 -0.100427 0.0300228
         rotation 0.9999998266957971 -0.00042000549560728523 -0.0004125575827653237 1.5715676668959702
         children [
           DEF armright Shape {
             appearance PBRAppearance {
             }
             geometry Capsule {
-              height 0.1
+              height 0.09
               radius 0.01
             }
           }
@@ -163,14 +163,14 @@ DEF Robot Robot {
         }
       ]
       endPoint Solid {
-        translation 0.000701833 0.121947 0.0300428
+        translation 0.000639761 0.101947 0.0299886
         rotation -0.9999971244918835 0.0008781078925736615 -0.0022315766832986727 1.5680908888174945
         children [
           DEF armlaft Shape {
             appearance PBRAppearance {
             }
             geometry Capsule {
-              height 0.1
+              height 0.09
               radius 0.01
             }
           }
@@ -307,4 +307,30 @@ Robot {
   name "supervisor"
   controller "supervisor_controller"
   supervisor TRUE
+}
+DEF Wall Solid {
+  translation -0.39 -0.53 0
+  children [
+    Shape {
+      appearance PBRAppearance {
+      }
+      geometry Box {
+        size 10.2 0.1 0.3
+      }
+    }
+  ]
+  name "Wall"
+}
+DEF Wall Solid {
+  translation -0.39 0.25 0
+  children [
+    Shape {
+      appearance PBRAppearance {
+      }
+      geometry Box {
+        size 10.2 0.1 0.3
+      }
+    }
+  ]
+  name "Wall(1)"
 }
