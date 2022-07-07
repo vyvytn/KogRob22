@@ -50,7 +50,7 @@ class Generation:
         #change genes
         return child_gens
 
-    def new_gen(self, weights):
+    def loop_generations(self, weights):
         new_gen=[]
         generation_fitness=self.calc_fittness_gen(weights)
         half= weights.size/2
@@ -65,7 +65,12 @@ class Generation:
         best_chromosome=0
         return best_chromosome
 
+    def loop_population():
+        pass
+
+    def selection():
+        pass
     def reproduce(self):
         init_weights = self.init_gen()
-        return self.new_gen(init_weights)
+        return self.loop_generations(init_weights)
     
