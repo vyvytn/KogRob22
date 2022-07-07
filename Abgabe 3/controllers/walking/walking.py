@@ -25,8 +25,8 @@ sensor_names=['dsfrontmiddle','dsfrontright','dsfrontleft','dsleft','dsright','d
 for s in sensor_names:
     sensors.append(robot.getDevice(s))
 
-receiver = robot.getReceiver("receiver")
-receiver.enable(timestep)
+#receiver = robot.getReceiver("receiver")
+#receiver.enable(timestep)
     
 
 while robot.step(timestep) != -1:

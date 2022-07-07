@@ -1,21 +1,13 @@
 import enum
 import random
 import numpy as np
-class Genotype:
-	def __init__(self, size):
-		self.size = size
-
-	def generate_chromosome(self):
-		chromosome = []
-		for i in range(self.size):
-			chromosome.append(random.uniform(-1, 1))
-		return chromosome
+import Genotype 
 
 class Generation:
 
     def __init__(self,
                 genotype: Genotype,
-                fit_func,
+                #fit_func,
                 generations=30,
                 population_size=50,
                 mut_prob=0.25,
@@ -26,14 +18,17 @@ class Generation:
         self.mut_prob = mut_prob
         self.tournamentSize = tournamentSize
         self.genotype = genotype
-        self.fit_func = fit_func
+        #self.fit_func = fit_func
         self.elite_thresh=elite_thresh
 
-    def init_gen_geno(self):
+    def init_gen(self):
         first_gen=[]
         for i in range(self.population_size):
-            first_gen.append(self.genotype.generate_chromosome())    
+            first_gen.append(self.genotype.generate())    
         return 0
+
+    def get_gen(self):
+        return self.genotype
 
     def calc_fitness_indiv(self, chromosome):
         return self.fit_func(chromosome)

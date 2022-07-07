@@ -1,8 +1,13 @@
 from controller import Motor, Supervisor, Node
-from Generation import Generation, Genotype
+from Generation import Generation
+from Genotype import Genotype
 # create the Robot instance.
 
 #Generation = Generation(Genotype(40))
+genotype=Genotype(40)
+gen=Generation(genotype)
+gen.init_gen()
+print('GEN',gen.get_gen())
 supervisor = Supervisor()
 timestep = int(supervisor.getBasicTimeStep())
 #emitter = supervisor.getEmitter("emitter")
@@ -22,8 +27,8 @@ def reset_robot():
     rot_field.setSFRotation(start_rot)
     trans_field.setSFVec3f(start_pos)
     rot_field.setSFRotation(start_rot)
+    
 def open_file(file):
-
     pass
     
 def start_loop():
