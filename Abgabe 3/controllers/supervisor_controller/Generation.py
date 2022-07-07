@@ -6,7 +6,7 @@ import Genotype
 class Generation:
 
     def __init__(self,
-                genotype: Genotype,
+                #genotype: Genotype,
                 fit_func,
                 generations=30,
                 population_size=50,
@@ -16,13 +16,17 @@ class Generation:
         self.population_size = population_size
         self.mut_prob = mut_prob
         self.tournamentSize = tournamentSize
-        self.genotype = genotype
+        #self.genotype = genotype
         self.fit_func = fit_func
         self.elite_thresh=elite_thresh,
         self.generations=generations
 
     def init_gen(self):
         init_weights=[]
+        # Gewichte generieren
+        # x genotypen erstllen - populationsgröße
+        # m und n Parameter übergeben
+        genotype=Genotype(4,5)
         for i in range(self.population_size):
             init_weights.append(self.genotype.generate_weights())    
         return init_weights
@@ -50,7 +54,11 @@ class Generation:
         #change genes
         return child_gens
 
+    # list of weights
     def loop_generations(self, weights):
+        generation=10
+        population=10 
+        new_generation=10
         new_gen=[]
         generation_fitness=self.calc_fittness_gen(weights)
         half= weights.size/2

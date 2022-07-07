@@ -1,7 +1,7 @@
 from controller import Motor, Supervisor, Node, Emitter, Receiver
 from Generation import Generation
-from Genotype import Genotype
 import json
+
 def fitness_function():
     fitness=0
     cur_pos=robot.getPosition()
@@ -16,15 +16,15 @@ def reset_robot():
 def open_file(file):
     pass
     
-def calc_fitness_weights(weights):
+def calc_fitness_weight(weight):
 
-    weightsJSON = json.dumps(weights.tolist())
+    weightsJSON = json.dumps(weight.tolist())
     emitter.send(weightsJSON)
     
     #start 10 sec timer
     start_timer = supervisor.getTime()
     timer = 0.000
-    
+    fitness=0
     individual_fitness=0
     #robo loop
     while supervisor.step(timestep) != -1:
@@ -34,24 +34,32 @@ def calc_fitness_weights(weights):
         if timer >10:
             break
         individual_fitness=fitness_function()
-    return individual_fitness
+        if individual_fitness >0.5:
+                fitness+=5
+        elif individual_fitness > 0.4:
+                fitness+=4        
+    return fitness
        
 def main():
     #run generation and get best weight out of it
-    best_weights =  gen.reproduce()
+    #best_weights =  gen.reproduce()
     #emit best weight to Neural Network 
     f = open('weights', 'w')
-    weightsJSON = json.dumps(best_weights.tolist())
-    f.write(weightsJSON)
-    emitter.send(weightsJSON)
+    #weightsJSON = json.dumps(best_weights.tolist())
+    #f.write(weightsJSON)
+    #emitter.send(weightsJSON)
 
     #tidy up
     reset_robot()
 
 emitter=Emitter
-genotype=Genotype(40)
-gen=Generation(genotype, calc_fitness_weights)
-gen.init_gen()
+# x genotypen erstllen - populationsgröße
+# m und n Parameter übergeben
+#genotype=Genotype(4)
+#call fitnesscore
+gen=Generation(calc_fitness_weight)
+#gen.init_gen()
+
 # create the Robot instance.
 supervisor = Supervisor()
 timestep = int(supervisor.getBasicTimeStep())
