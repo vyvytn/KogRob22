@@ -56,7 +56,7 @@ def calc_fitness_weight(weight):
                 fitness+=2    
         elif individual_fitness < 0.1:
                 fitness+=0    
-                
+
     return fitness
 
 def main():
@@ -64,11 +64,13 @@ def main():
     #intialize Generation/population class; pass fitness function from above
     gen=Generation(calc_fitness_weight)
 
-    # returns best weight matrix
-    best_weight_matrix=gen.reproduce()
-
-    #best weight matrix will be also send to neural network as the LAST matrix
     """
+    TODO: returns best weight matrix
+    best_weight_matrix=gen.reproduce()
+    """
+
+    """
+    TODO: 
     f = open('weights', 'w')
     weightsJSON = json.dumps(best_weights.tolist())
     f.write(weightsJSON)
