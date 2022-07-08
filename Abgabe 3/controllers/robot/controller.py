@@ -1,35 +1,35 @@
-from controller import Robot, Motor, Supervisor, Receiver
-#import NN
+from controller import Robot, Motor#, Supervisor, Receiver
+
 
 # create the Robot instance.
 robot = Robot()
 
 # get the time step of the current world.
-#timestep =  int(robot.getBasicTimeStep())
-timestep =  int(1)
+# timestep =  int(robot.getBasicTimeStep())
+timeStep = int(1)
 
 maxMotorVelocity = 6
 speed = 2  # [rad/s]
 
 hingejoints = []
-hgnames = ['shoulderleft', 'shoulderright']
+hgnames = ['armright', 'armleft']
 for name in hgnames:
     hingejoints.append(robot.getDevice(name))
 
-for idx,name in enumerate(hingejoints):
+for idx, name in enumerate(hingejoints):
     hingejoints[idx].setPosition(float('inf'))
     hingejoints[idx].setVelocity(speed)    
     
-sensors=[]    
-sensor_names=['dsfrontmiddle','dsfrontright','dsfrontleft','dsleft','dsright','dsback']
+sensors = []
+sensor_names = ['dsfrontmiddle', 'dsfrontright', 'dsfrontleft', 'dsleft', 'dsright', 'dsback']
 for s in sensor_names:
     sensors.append(robot.getDevice(s))
 
-#receiver = robot.getReceiver("receiver")
-#receiver.enable(timestep)
+# receiver = robot.getReceiver("receiver")
+# receiver.enable(timestep)
     
 
-while robot.step(timestep) != -1:
+while robot.step(timeStep) != -1:
     """ receive Data from emitter
     if receiver.getQueueLength() > 0:
         data = receiver.getData()
