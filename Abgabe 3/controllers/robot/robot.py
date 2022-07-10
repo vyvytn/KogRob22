@@ -45,7 +45,7 @@ while robot.step(timeStep) != -1:
 
     NN_input = np.array([left_motor.getVelocity(),
                          right_motor.getVelocity(),
-                         outerLeftSensorValue.getValue(),
+                         outerLeftSensor.getValue(),
                          centralLeftSensor.getValue(),
                          centralSensor.getValue(),
                          centralRightSensor.getValue(),
