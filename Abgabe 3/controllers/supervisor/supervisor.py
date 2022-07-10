@@ -46,6 +46,7 @@ def fitness_function(weight):
 	position_difference = calc_difference()
 
 	# TODO: write fitness scoring
+	return position_difference / 0.7
 
 
 def calc_difference():
