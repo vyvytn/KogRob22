@@ -107,7 +107,9 @@ DEF Robot Robot {
   translation -5.21 -0.14 0.05
   rotation 0 1 0 0
   children [
-    DEF receiver Receiver {
+    Receiver {
+    }
+    Emitter {
     }
     DEF armright Hinge2Joint {
       jointParameters DEF right_arm1 HingeJointParameters {
@@ -308,6 +310,8 @@ DEF Robot Robot {
 }
 Robot {
   children [
+    Receiver {
+    }
     Emitter {
     }
   ]
