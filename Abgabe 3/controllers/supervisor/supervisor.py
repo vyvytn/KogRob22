@@ -70,6 +70,9 @@ def reset_robot():
 
 
 def fitness_function(weight):
+
+	time_for_scoring=100.000
+
 	# weight is a single weight matrix of one individual
 	# weight_json = json.dumps(weight.tolist())
 	# emitter.send(weight_json)
@@ -80,18 +83,13 @@ def fitness_function(weight):
 	# start timer
 	start_timer = supervisor.getTime()
 	timer = 0.000
-
 	while supervisor.step(timeStep) != -1:
 		timer = supervisor.getTime() - start_timer
-
-
-
 		if timer > time_for_scoring:
 			break
 
 	position_difference = calc_difference()
 
-	# TODO: write fitness scoring
 	return position_difference / 0.7
 
 
