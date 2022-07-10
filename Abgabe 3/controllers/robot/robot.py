@@ -1,5 +1,4 @@
 from controller import Robot, Motor, Emitter, Receiver, Supervisor
-from neural_network import NeuralNetwork
 import numpy as np
 import json
 import struct
@@ -20,7 +19,7 @@ distanceSensorCalibrationConstant = 360
 hgnames = ['shoulderright', 'shoulderleft', 'shoulderright2', 'shoulderleft2']
 right_motor = robot.getDevice(hgnames[0])
 left_motor = robot.getDevice(hgnames[1])
-right_motor_2= robot.getDevice(hgnames[2])
+right_motor_2 = robot.getDevice(hgnames[2])
 left_motor_2 = robot.getDevice(hgnames[3])
 
 left_motor.setPosition(float('inf'))
@@ -32,7 +31,6 @@ left_motor.setVelocity(velocity)
 left_motor.setVelocity(velocity)
 right_motor.setVelocity(velocity)
 right_motor_2.setVelocity(velocity)
-
 
 # Get frontal distance sensors.
 outerLeftSensor = robot.getDevice("dsleft")
@@ -60,7 +58,7 @@ while robot.step(timeStep) != -1:
 
 
     
-    string_message = np.array2string(NN_input)
+    string_message = np.array2string(NN_input,separator=',')
     string_message = string_message.encode("utf-8")
     emitter.send(string_message)
     
