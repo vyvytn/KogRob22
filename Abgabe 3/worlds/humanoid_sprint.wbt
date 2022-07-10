@@ -306,7 +306,7 @@ Robot {
 DEF Wall Solid {
   translation -0.39 -0.53 0
   children [
-    Shape {
+    DEF wall Shape {
       appearance PBRAppearance {
       }
       geometry DEF wall1 Box {
@@ -315,11 +315,14 @@ DEF Wall Solid {
     }
   ]
   name "Wall"
+  boundingObject USE wall
+  physics Physics {
+  }
 }
 DEF Wall Solid {
   translation -0.39 0.25 0
   children [
-    Shape {
+    DEF wall Shape {
       appearance PBRAppearance {
       }
       geometry DEF wall2 Box {
@@ -328,4 +331,7 @@ DEF Wall Solid {
     }
   ]
   name "Wall(1)"
+  boundingObject USE wall
+  physics Physics {
+  }
 }
