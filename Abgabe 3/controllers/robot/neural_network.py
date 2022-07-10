@@ -4,20 +4,16 @@ from torch import nn
 
 class NeuralNetwork(nn.Module):
 
-	def __init__(self, input_size, output_size, weights):
+	def __init__(self, input_size, output_size):
 		super(NeuralNetwork, self).__init__()
 
-		self.layers = nn.Sequential(
-			nn.Linear(input_size, output_size),
-			nn.Tanh()
-		)
-
-		with torch.no_grad():
-			self.linear.weight.copy_(weights)
+		self.linear = nn.Linear(input_size, output_size)
+		self.tanh = nn.Tanh()
 
 	def forward(self, x):
-		y = self.layers(x)
+		y1 = self.linear(x)
+		y = self.tanh(y1)
 		return y
 
 	def set_weights(self, weights):
-		self.linear.weight = weights
+		self.linear.weight.copy_(weights)

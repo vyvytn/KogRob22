@@ -22,8 +22,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.1448603225387818 -0.6905921880362003 0.7085886795435937 5.707586270878838
-  position -11.927924750235759 2.6202588215295664 4.94735584880098
+  orientation -0.1252520611019358 -0.7675190972104355 0.62867030835486 5.775256963713106
+  position -6.848183457943287 0.49595092060416057 1.1163749747918896
 }
 TexturedBackground {
   texture "noon_cloudy_countryside"
@@ -157,14 +157,9 @@ DEF Robot Robot {
           name "shoulderleft"
         }
       ]
-      device2 [
-        PositionSensor {
-          name "posleft"
-        }
-      ]
       endPoint Solid {
-        translation 0.000639761 0.101947 0.0299886
-        rotation -0.9999971244918835 0.0008781078925736615 -0.0022315766832986727 1.5680908888174945
+        translation 0.000639761 0.10194700000000001 0.029988600000000004
+        rotation -0.9999971244918835 0.0008781078925736615 -0.0022315766832986727 1.5680908888174947
         children [
           DEF armlaft Shape {
             appearance PBRAppearance {
@@ -314,7 +309,7 @@ DEF Wall Solid {
     Shape {
       appearance PBRAppearance {
       }
-      geometry Box {
+      geometry DEF wall1 Box {
         size 10.2 0.1 0.3
       }
     }
@@ -327,7 +322,7 @@ DEF Wall Solid {
     Shape {
       appearance PBRAppearance {
       }
-      geometry Box {
+      geometry DEF wall2 Box {
         size 10.2 0.1 0.3
       }
     }
