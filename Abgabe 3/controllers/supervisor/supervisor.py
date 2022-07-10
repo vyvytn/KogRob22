@@ -1,4 +1,5 @@
 from controller import Motor, Supervisor, Node, Emitter, Receiver
+#from robot.neural_network import NeuralNetwork
 from population import Population
 import json
 
@@ -14,6 +15,24 @@ robot = supervisor.getFromDef("Robot")
 # nodes for translation and rotation field
 trans_field = robot.getField("translation")
 rotation_field = robot.getField("rotation")
+
+param_right1= supervisor.getFromDef("right_arm1")
+axis_right1= param_right1.getField("axis")
+param_right2= supervisor.getFromDef("right_arm2")
+axis_right2= param_right2.getField("axis")
+position_right1= param_right1.getField("position")
+position_right2= param_right2.getField("position")
+
+
+param_left1 = supervisor.getFromDef("left_arm1")
+axis_left1= param_left1.getField("axis")
+param_left2 = supervisor.getFromDef("left_arm2")
+axis_left2= param_left2.getField("axis")
+position_left1= param_left1.getField("position")
+position_left2= param_left2.getField("position")
+#axis_right.setSFVec3f([0.0,0.0,1.0])
+#axis_right.getSFVec3f()
+
 
 # get initial start position for reset method
 start_rotation = rotation_field.getSFRotation()

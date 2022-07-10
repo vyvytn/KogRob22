@@ -28,7 +28,7 @@ right_motor_2.setPosition(float('inf'))
 left_motor_2.setPosition(float('inf'))
 
 left_motor.setVelocity(velocity)
-left_motor_2.setVelocity(velocity)
+left_motor.setVelocity(velocity)
 right_motor.setVelocity(velocity)
 right_motor_2.setVelocity(velocity)
 

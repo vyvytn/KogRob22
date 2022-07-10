@@ -107,15 +107,14 @@ DEF Robot Robot {
   translation -5.21 -0.14 0.05
   rotation 0 1 0 0
   children [
-    Receiver {
+    DEF receiver Receiver {
     }
     DEF armright Hinge2Joint {
-      jointParameters HingeJointParameters {
-        axis 0 1 0
+      jointParameters DEF right_arm1 HingeJointParameters {
+        axis 0 0 1
         anchor 1.73472e-18 -0.07 0.03
       }
-      jointParameters2 JointParameters {
-        axis 1 0 0
+      jointParameters2 DEF right_arm2 JointParameters {
       }
       device [
         RotationalMotor {
@@ -128,8 +127,8 @@ DEF Robot Robot {
         }
       ]
       endPoint Solid {
-        translation -4.08665e-05 -0.100427 0.0300228
-        rotation 0.9999998266957971 -0.00042000549560728523 -0.0004125575827653237 1.5715676668959702
+        translation -4.0866499986997786e-05 -0.10042700000000002 0.0300228
+        rotation 0.9999998266957975 -0.0004200054953936944 -0.00041255758255194356 1.5715676668959702
         children [
           DEF armright Shape {
             appearance PBRAppearance {
@@ -147,11 +146,11 @@ DEF Robot Robot {
       }
     }
     DEF armleft Hinge2Joint {
-      jointParameters HingeJointParameters {
+      jointParameters DEF left_arm1 HingeJointParameters {
         axis 0 1 0
         anchor -1.73472e-18 0.07 0.03
       }
-      jointParameters2 JointParameters {
+      jointParameters2 DEF left_arm2 JointParameters {
         axis 1 0 0
       }
       device [
@@ -162,6 +161,7 @@ DEF Robot Robot {
       device2 [
         RotationalMotor {
           name "shoulderleft2"
+          consumptionFactor 3
         }
       ]
       endPoint Solid {
@@ -304,6 +304,7 @@ DEF Robot Robot {
   physics Physics {
   }
   controller "robot"
+  supervisor TRUE
 }
 Robot {
   children [
@@ -328,6 +329,7 @@ DEF Wall Solid {
   name "Wall"
   boundingObject USE wall
   physics Physics {
+    mass 10
   }
 }
 DEF Wall Solid {
@@ -344,5 +346,6 @@ DEF Wall Solid {
   name "Wall(1)"
   boundingObject USE wall
   physics Physics {
+    mass 10
   }
 }
