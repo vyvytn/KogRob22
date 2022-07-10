@@ -1,25 +1,25 @@
 import numpy as np
 
 
-def set_fitness_function(fitness_func):
-	Genotype.fitness_func = fitness_func
-
-
-def generate(m, n):
-	matrix = np.random.rand(m, n)
+def generate():
+	matrix = np.random.rand(Genotype.m, Genotype.n)
 
 	return Genotype(matrix)
 
 
-def set_m_n(m, n):
-	Genotype.m = m
-	Genotype.n = n
+def set_fitness_function(fitness_func):
+	Genotype.fitness_func = fitness_func
+
+
+def set_m_n(rows, columns):
+	Genotype.rows = rows
+	Genotype.columns = columns
 
 
 class Genotype:
 	# Matrixgrößen
 	fitness_func = None
-	m, n = 0, 0
+	rows, columns = 0, 0
 
 	def __init__(self, weight_matrix):
 		self.weight_matrix = weight_matrix

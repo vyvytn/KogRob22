@@ -301,11 +301,11 @@ DEF Robot Robot {
   boundingObject USE RoboterBody
   physics Physics {
   }
-  controller "walking"
+  controller "robot"
 }
 Robot {
-  name "supervisor"
-  controller "supervisor_controller"
+  name "supervisor_controller"
+  controller "supervisor"
   supervisor TRUE
 }
 DEF Wall Solid {
