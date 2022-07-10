@@ -19,13 +19,6 @@ receiver = supervisor.getDevice("receiver")
 robot = supervisor.getFromDef("Robot")
 receiver.enable(timeStep)
 
-#receive Data from emitter
-"""
-print('DATA TO RECEIVED')
-receivedData = receiver.getData().decode("utf-8")
-print("supervisor handle receiver data:", receivedData)
-receiver.nextPacket()
-"""
 
 # nodes for translation and rotation field
 trans_field = robot.getField("translation")
@@ -70,11 +63,13 @@ def reset_robot():
 
 
 def fitness_function(weight):
-	# weight is a single weight matrix of one individual
-	# weight_json = json.dumps(weight.tolist())
-	# emitter.send(weight_json)
-	
-	#NN.set_weight(weight)
+	message=np.array(weight)
+    #send sensordata to supervisor fpr NN
+	string_message = np.array2string(message,separator=',')
+	string_message = string_message.encode("utf-8")
+	emitter.send(string_message)
+
+	NN.set_weight(weight)
 
 	# TODO: robot.getTime() ?
 	# start timer
@@ -83,8 +78,11 @@ def fitness_function(weight):
 
 	while supervisor.step(timeStep) != -1:
 		timer = supervisor.getTime() - start_timer
-
-
+		
+		if receiver.getQueueLength() > 0:
+			receivedData = receiver.getData().decode("utf-8")
+			sensor_data=eval(receivedData)
+			receiver.nextPacket()
 
 		if timer > time_for_scoring:
 			break
@@ -103,17 +101,7 @@ def calc_difference():
 def main():
     new_population = Population(output_size, input_size, fitness_function)
     
-    while supervisor.step(timeStep) != -1:
-        if receiver.getQueueLength() > 0:
-            receivedData = receiver.getData().decode("utf-8")
-            print("receiver data:",  eval(receivedData))
-            receiver.nextPacket()
-         
-        message=np.array([1,2,3,4,5])
-        #send sensordata to supervisor fpr NN
-        string_message = np.array2string(message,separator=',')
-        string_message = string_message.encode("utf-8")
-        emitter.send(string_message)
+        
     
 """
 NN_input = np.array([axis_right1.getSFVec3f()[0],
