@@ -1,3 +1,5 @@
+import numpy as np
+
 from controller import Motor, Supervisor, Node, Emitter, Receiver
 from neural_network import NeuralNetwork
 from population import Population
@@ -6,6 +8,8 @@ import json
 input_size = 1
 output_size = 1
 time_for_scoring = 10  # in Sekunden
+
+NN = NeuralNetwork(input_size, output_size)
 
 supervisor = Supervisor()
 emitter = supervisor.getDevice("emitter")
@@ -18,21 +22,29 @@ rotation_field = robot.getField("rotation")
 
 param_right1 = supervisor.getFromDef("right_arm1")
 axis_right1 = param_right1.getField("axis")
+position_right1 = param_right1.getField("position")
+
 param_right2 = supervisor.getFromDef("right_arm2")
 axis_right2 = param_right2.getField("axis")
-position_right1 = param_right1.getField("position")
 position_right2 = param_right2.getField("position")
-
 
 param_left1 = supervisor.getFromDef("left_arm1")
 axis_left1 = param_left1.getField("axis")
+position_left1 = param_left1.getField("position")
+
 param_left2 = supervisor.getFromDef("left_arm2")
 axis_left2 = param_left2.getField("axis")
-position_left1 = param_left1.getField("position")
 position_left2 = param_left2.getField("position")
-#axis_right.setSFVec3f([0.0,0.0,1.0])
-#axis_right.getSFVec3f()
 
+# axis_right.setSFVec3f([0.0,0.0,1.0])
+# axis_right.getSFVec3f()
+
+# Get frontal distance sensors.
+outerLeftSensor = supervisor.getFromDef("dsleft")
+centralLeftSensor = supervisor.getFromDef("dsfrontleft")
+centralSensor = supervisor.getFromDef("dsfrontmiddle")
+centralRightSensor = supervisor.getFromDef("dsfrontright")
+outerRightSensor = supervisor.getFromDef("dsright")
 
 # get initial start position for reset method
 start_rotation = rotation_field.getSFRotation()
@@ -49,15 +61,20 @@ def reset_robot():
 
 def fitness_function(weight):
 	# weight is a single weight matrix of one individual
-	weight_json = json.dumps(weight.tolist())
-	emitter.send(weight_json)
+	# weight_json = json.dumps(weight.tolist())
+	# emitter.send(weight_json)
 
+	NN.set_weight(weight)
+
+	# TODO: robot.getTime() ?
 	# start timer
 	start_timer = supervisor.getTime()
 	timer = 0.000
 
 	while supervisor.step(timeStep) != -1:
 		timer = supervisor.getTime() - start_timer
+
+
 
 		if timer > time_for_scoring:
 			break
@@ -75,8 +92,41 @@ def calc_difference():
 
 def main():
 	new_population = Population(output_size, input_size, fitness_function)
-	print(new_population)
 
+'''
+NN_input = np.array([axis_right1.getSFVec3f()[0],
+					 axis_right1.getSFVec3f()[1],
+					 axis_right1.getSFVec3f()[2],
+
+					 position_right1.getSFFloat(),
+
+					 axis_right2.getSFVec3f()[0],
+					 axis_right2.getSFVec3f()[1],
+					 axis_right2.getSFVec3f()[2],
+
+					 position_right2.getSFFloat(),
+
+					 axis_left1.getSFVec3f()[0],
+					 axis_left1.getSFVec3f()[1],
+					 axis_left1.getSFVec3f()[2],
+
+					 position_left1.getSFFloat(),
+
+					 axis_left2.getSFVec3f()[0],
+					 axis_left2.getSFVec3f()[1],
+					 axis_left2.getSFVec3f()[2],
+
+					 position_left2.getSFFloat(),
+
+					 outerLeftSensor.getValue(),
+					 centralLeftSensor.getValue(),
+					 centralSensor.getValue(),
+					 centralRightSensor.getValue(),
+					 outerRightSensor.getValue()
+					 ])
+
+print(len(NN_input))
+'''
 
 
 
