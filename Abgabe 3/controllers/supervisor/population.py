@@ -2,6 +2,9 @@ from genotype import Genotype, set_fitness_function, generate, set_m_n
 import numpy as np
 
 
+"""
+Crossover algorithm for two individuals
+"""
 def crossover(mother, father):
 	mother_flattened = mother.flatten()
 	father_flattened = father.flatten()
@@ -15,7 +18,9 @@ def crossover(mother, father):
 
 	return Genotype(offspring_a), Genotype(offspring_b)
 
-
+"""
+Mutation algorithm for a genotype
+"""
 def mutate(genotype):
 	genotype_flattened = genotype.flattened()
 
@@ -41,7 +46,9 @@ def mutate(genotype):
 
 	return Genotype(offspring)
 
-
+"""
+Calculates percentage change between two fitness scores
+"""
 def get_change(current, previous):
 	if current == previous:
 		return 0
@@ -80,6 +87,10 @@ class Population:
 		for i in range(self.init_populations_size):
 			self.population.append(generate())
 
+	"""
+	Checks if <last_x_best_fitness> fitness scores are already saved.
+	If yes, clears array and appends maximum of this generation
+	"""
 	def best_fitness(self):
 		if len(self.population) == 0:
 			return None
@@ -91,6 +102,11 @@ class Population:
 			max(self.population, key=lambda individual: individual.fitness)
 		)
 
+	"""
+	Chooses the best <fittest_thresh> % of the population of current generation.
+	Those 'chosen ones' are then mutated or crossovered with some probability defined in <mut_prob>.
+	Also the best <elitism_thresh> are also added to the next generation without any alteration of the genomes.
+	"""
 	def survival_of_the_fittest(self):
 		new_population = []
 		chosen_ones = []
@@ -116,10 +132,19 @@ class Population:
 		Population.population = new_population
 		self.generation += 1
 
+	"""
+	Chooses the best <elitism_thresh> % of the population and returns them to be added to the new population.
+	"""
 	def elitist(self):
 		elitist_candidates = self.population[:int(len(self.population) * self.elitism_thresh)]
 		return elitist_candidates
 
+	"""
+	Exit condition of loop in run()
+	If first documented fitness score and 10th documented fitness score are less than 1% different,
+	the loop should be exited.
+	The last ten fitness scores are documented in the array named last_x_best_fitness.
+	"""
 	def exit_loop(self):
 		if len(self.last_x_best_fitness) == self.max_last_best:
 			if get_change(self.last_x_best_fitness[-1], self.last_x_best_fitness[0]) <= 0.01:
@@ -127,6 +152,9 @@ class Population:
 
 		return False
 
+	"""
+	Run loop for generations
+	"""
 	def run(self):
 		self.init_gen()
 		self.best_fitness()
