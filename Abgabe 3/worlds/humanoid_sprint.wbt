@@ -113,10 +113,11 @@ DEF Robot Robot {
     }
     DEF armright Hinge2Joint {
       jointParameters DEF right_arm1 HingeJointParameters {
-        axis 0 0 1
+        axis 1 1 1
         anchor 1.73472e-18 -0.07 0.03
       }
       jointParameters2 DEF right_arm2 JointParameters {
+        axis 1 1 1
       }
       device [
         RotationalMotor {
@@ -129,8 +130,8 @@ DEF Robot Robot {
         }
       ]
       endPoint Solid {
-        translation -4.086649998331853e-05 -0.10042700000000002 0.0300228
-        rotation 0.9999998266957975 -0.000420005495333234 -0.00041255758249152976 1.5715676668959702
+        translation -4.086650006863003e-05 -0.10042700000017943 0.03002279999995368
+        rotation 0.9999998266957975 -0.0004200054953332891 -0.00041255758249171223 1.5715676668959702
         children [
           DEF armright Shape {
             appearance PBRAppearance {
@@ -149,11 +150,11 @@ DEF Robot Robot {
     }
     DEF armleft Hinge2Joint {
       jointParameters DEF left_arm1 HingeJointParameters {
-        axis 0 1 0
+        axis 1 1 1
         anchor -1.73472e-18 0.07 0.03
       }
       jointParameters2 DEF left_arm2 JointParameters {
-        axis 1 0 0
+        axis 1 1 1
       }
       device [
         RotationalMotor {
@@ -167,8 +168,8 @@ DEF Robot Robot {
         }
       ]
       endPoint Solid {
-        translation 0.000639761 0.10194700000000001 0.029988600000000004
-        rotation -0.9999971244918835 0.0008781078925736615 -0.0022315766832986727 1.5680908888174947
+        translation 0.0006397610000853848 0.10194700000017845 0.029988600000046592
+        rotation -0.9999971244918835 0.0008781078925714407 -0.002231576683297552 1.5680908888174945
         children [
           DEF armlaft Shape {
             appearance PBRAppearance {

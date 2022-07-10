@@ -7,7 +7,7 @@ import json
 import torch
 input_size = 25
 output_size = 20
-time_for_scoring = 100  # in Sekunden
+time_for_scoring = 5 # in Sekunden
 
 #NN = NeuralNetwork(input_size, output_size)
 
@@ -108,19 +108,16 @@ def run_robot(nn):
 								sensor_data[8]
 								])
 
-			print('len of input',len(NN_input))
-
 			output=nn.forward(NN_input).cpu().detach().numpy()
 
 			axis_right1.setSFVec3f([output[0],output[1],output[2]])
-			print(output[3])
-			position_right1.setSFFloat(output[3])
+			position_right1.setSFFloat(float(output[3]))
 			axis_right2.setSFVec3f([output[4],output[5],output[6]])
-			position_right2.setSFFloat(output[7])
+			position_right2.setSFFloat(float(output[7]))
 			axis_left1.setSFVec3f([output[8],output[9],output[10]])
-			position_left1.setSFFloat(output[11])
+			position_left1.setSFFloat(float(output[11]))
 			axis_left2.setSFVec3f([output[12],output[13],output[14]])
-			position_left2.setSFFloat(output[15])
+			position_left2.setSFFloat(float(output[15]))
 
 			#get velocity for roboter
 			velocity=np.array([output[-7],output[-6], output[-5],output[-4]])
@@ -148,18 +145,18 @@ def fitness_function(weight):
 			break
 
 	position_difference = calc_difference()
-
+	reset_robot()
 	# TODO: write fitness scoring
-	return position_difference / 0.7
+	return position_difference / 0.4
 
 
 def calc_difference():
     current_pos = robot.getPosition()
-    return current_pos[0] - start_position[0]
+    return abs(current_pos[0] - start_position[0])
 
 
 def main():
-    new_population = Population(output_size, input_size, fitness_function)
-    print(new_population.run())
+	new_population = Population(output_size, input_size, fitness_function)
+	new_population.run()
 	
 main()

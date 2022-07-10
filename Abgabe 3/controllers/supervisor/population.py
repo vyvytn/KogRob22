@@ -1,21 +1,28 @@
+from turtle import update
 from genotype import Genotype, set_fitness_function, generate, set_m_n
 import numpy as np
+import numpy as np
+import time
+import matplotlib.pyplot as plt
+#Create figure and subplot
 
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1) 
 """
 Crossover algorithm for two individuals
 """
 
 
 def crossover(mother, father):
-	mother_flattened = mother.flatten()
-	father_flattened = father.flatten()
+	mother_flattened = mother.weight_matrix.flatten()
+	father_flattened = father.weight_matrix.flatten()
 
 	crossover_point = mother_flattened.size // 2
 
 	offspring_a = np.append(mother_flattened[:crossover_point], father_flattened[crossover_point:]) \
-		.reshape(Genotype.m, Genotype.n)
+		.reshape(Genotype.rows, Genotype.columns)
 	offspring_b = np.append(mother_flattened[:crossover_point], father_flattened[crossover_point:]) \
-		.reshape(Genotype.m, Genotype.n)
+		.reshape(Genotype.rows, Genotype.columns)
 
 	return Genotype(offspring_a), Genotype(offspring_b)
 
@@ -26,11 +33,11 @@ Mutation algorithm for a genotype
 
 
 def mutate(genotype):
-	genotype_flattened = genotype.flattened()
+	genotype_flattened = genotype.weight_matrix.flatten()
 
 	# Defining maximum mutation points in the array
 	maximum_mutation_percentage = 0.2
-	mutation_points = np.random.randint(low=1, high=int(maximum_mutation_percentage * Genotype.m * Genotype.n))
+	mutation_points = np.random.randint(low=1, high=int(maximum_mutation_percentage * Genotype.rows * Genotype.columns))
 
 	# Defining the interval of numbers possible to use for mutation
 	max_number_in_array = np.amax(genotype_flattened)
@@ -44,10 +51,9 @@ def mutate(genotype):
 	list_of_points_to_mutate = np.random.randint(low=0, high=genotype_flattened.size - 1, size=mutation_points)
 
 	for point in list_of_points_to_mutate:
-		genotype_flattened[point] = np.random.Generator.uniform(low=intervall_min, high=intervall_max + 1, size=None)
-
-	offspring = genotype_flattened.reshape(Genotype.m, Genotype.n)
-
+		genotype_flattened[point] = np.random.uniform(low=intervall_min, high=intervall_max + 1, size=None)
+	offspring = genotype_flattened.reshape(Genotype.rows, Genotype.columns)
+	print('finished for loop')
 	return Genotype(offspring)
 
 
@@ -57,10 +63,10 @@ Calculates percentage change between two fitness scores
 
 
 def get_change(current, previous):
-	if current == previous:
+	if current.fitness == previous.fitness:
 		return 0
 	try:
-		return (abs(current - previous) / previous) * 100.0
+		return (abs(current.fitness - previous.fitness) / previous.fitness) * 100.0
 	except ZeroDivisionError:
 		return float('inf')
 
@@ -71,7 +77,7 @@ class Population:
 				 rows,  # Zeilen
 				 columns,  # Spalten
 				 fitness_function,
-				 init_populations_size=50,
+				 init_populations_size=15,
 				 fittest_thresh=0.2,
 				 elitism_thresh=0.1,
 				 mut_prob=0.3,
@@ -94,11 +100,20 @@ class Population:
 		for i in range(self.init_populations_size):
 			self.population.append(generate())
 
+	def update_diagramm(gen,fit_val):
+		x = np.linspace(0, gen, 100);
+		y = np.cos(x) 
+		ax.set_xlim(0, gen)    
+		ax.cla()
+		ax.plot(x, y)
+		display(fig)    
+		clear_output(wait = True)
+		plt.pause(0.1)
+
 	"""
 	Checks if <last_x_best_fitness> fitness scores are already saved.
 	If yes, clears array and appends maximum of this generation
 	"""
-
 	def best_fitness(self):
 		if len(self.population) == 0:
 			return None
@@ -109,6 +124,8 @@ class Population:
 		self.last_x_best_fitness.append(
 			max(self.population, key=lambda individual: individual.fitness)
 		)
+		self.update_diagramm(self.generation, self.last_x_best_fitness[-1].fitness)
+		print('best fitness')
 
 	"""
 	Chooses the best <fittest_thresh> % of the population of current generation.
@@ -119,9 +136,11 @@ class Population:
 	def survival_of_the_fittest(self):
 		new_population = []
 		chosen_ones = []
-		Population.population.sort(key=lambda individual: individual.fitness, reverse=True)
-		chosen_ones.extend(Population.population[:int(len(Population.population) * self.fittest_thresh)])
-
+		self.population.sort(key=lambda individual: individual.fitness, reverse=True)
+		if len(self.population) < 20:
+			chosen_ones=self.population
+		else:
+			chosen_ones.extend(self.population[:int(len(self.population) * self.fittest_thresh)])
 		for genotype in chosen_ones:
 			probability = np.random.uniform()
 
@@ -133,13 +152,14 @@ class Population:
 				chosen_ones_without_genotype.remove(genotype)
 				offspring_one, offspring_two = crossover(genotype,
 														 chosen_ones_without_genotype[np.random.randint(low=0, high=len(
-															 chosen_ones_without_genotype) - 1)])
+															 chosen_ones_without_genotype))])
 				new_population.extend([offspring_one, offspring_two])
 
 		new_population.extend(self.elitist())
-
-		Population.population = new_population
+		
+		self.population = new_population
 		self.generation += 1
+		print('current generation')
 
 	"""
 	Chooses the best <elitism_thresh> % of the population and returns them to be added to the new population.
@@ -158,7 +178,7 @@ class Population:
 
 	def exit_loop(self):
 		if len(self.last_x_best_fitness) == self.max_last_best:
-			if get_change(self.last_x_best_fitness[-1], self.last_x_best_fitness[0]) <= 0.01:
+			if get_change(self.last_x_best_fitness[-1], self.last_x_best_fitness[0]) <= 0.9:
 				return True
 
 		return False
@@ -171,8 +191,10 @@ class Population:
 		self.init_gen()
 		self.best_fitness()
 
-		while not self.exit_loop():
+			
+
+		for i in range(5):
 			self.survival_of_the_fittest()
 			self.best_fitness()
-
+		print('FINISHED')
 		return max(self.population, key=lambda individual: individual.fitness)

@@ -5,7 +5,6 @@ Generates a weight matrix
 """
 def generate():
 	matrix = np.random.rand(Genotype.rows, Genotype.columns)
-	print(matrix.shape)
 	return Genotype(matrix)
 
 
@@ -32,7 +31,8 @@ class Genotype:
 	def __init__(self, weight_matrix):
 		self.weight_matrix = weight_matrix
 		self.fitness = Genotype.fitness_func(weight_matrix)
-		print(self.__repr__(self))
+		print('init genotype')
+		print(self.fitness)
 
 	def __repr__(self):
-		return "Individual/genotype = " + self.weight_matrix + " Fitness = " + str(self.fitness)
+		return "Individual/genotype = " + self.weight_matrix.tostring()+ " Fitness = " + str(self.fitness)
