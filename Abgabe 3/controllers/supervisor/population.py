@@ -1,4 +1,4 @@
-from .genotype import Genotype, set_fitness_function, generate, set_m_n
+from genotype import Genotype, set_fitness_function, generate, set_m_n
 import numpy as np
 
 

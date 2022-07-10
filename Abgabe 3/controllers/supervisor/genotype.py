@@ -2,7 +2,7 @@ import numpy as np
 
 
 def generate():
-	matrix = np.random.rand(Genotype.m, Genotype.n)
+	matrix = np.random.rand(Genotype.rows, Genotype.columns)
 
 	return Genotype(matrix)
 
