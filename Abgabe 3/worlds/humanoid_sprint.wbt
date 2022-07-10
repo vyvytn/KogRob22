@@ -109,6 +109,8 @@ DEF Robot Robot {
   children [
     DEF receiver Receiver {
     }
+    DEF emitter Emitter {
+    }
     DEF armright Hinge2Joint {
       jointParameters DEF right_arm1 HingeJointParameters {
         axis 0 0 1
@@ -127,8 +129,8 @@ DEF Robot Robot {
         }
       ]
       endPoint Solid {
-        translation -4.0866499986997786e-05 -0.10042700000000002 0.0300228
-        rotation 0.9999998266957975 -0.0004200054953936944 -0.00041255758255194356 1.5715676668959702
+        translation -4.086649998331853e-05 -0.10042700000000002 0.0300228
+        rotation 0.9999998266957975 -0.000420005495333234 -0.00041255758249152976 1.5715676668959702
         children [
           DEF armright Shape {
             appearance PBRAppearance {
@@ -308,6 +310,8 @@ DEF Robot Robot {
 }
 Robot {
   children [
+    Receiver {
+    }
     Emitter {
     }
   ]

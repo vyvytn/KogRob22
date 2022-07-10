@@ -1,5 +1,5 @@
 import numpy as np
-
+import struct
 from controller import Motor, Supervisor, Node, Emitter, Receiver
 from neural_network import NeuralNetwork
 from population import Population
@@ -12,9 +12,20 @@ time_for_scoring = 10  # in Sekunden
 NN = NeuralNetwork(input_size, output_size)
 
 supervisor = Supervisor()
-emitter = supervisor.getDevice("emitter")
 timeStep = int(supervisor.getBasicTimeStep())
+
+emitter = supervisor.getDevice("emitter")
+receiver = supervisor.getDevice("receiver")
 robot = supervisor.getFromDef("Robot")
+receiver.enable(timeStep)
+
+#receive Data from emitter
+"""
+print('DATA TO RECEIVED')
+receivedData = receiver.getData().decode("utf-8")
+print("supervisor handle receiver data:", receivedData)
+receiver.nextPacket()
+"""
 
 # nodes for translation and rotation field
 trans_field = robot.getField("translation")
@@ -50,7 +61,6 @@ outerRightSensor = supervisor.getFromDef("dsright")
 start_rotation = rotation_field.getSFRotation()
 start_position = robot.getPosition()
 
-
 # reset robot to intial point
 def reset_robot():
 	trans_field.setSFVec3f(start_position)
@@ -63,8 +73,8 @@ def fitness_function(weight):
 	# weight is a single weight matrix of one individual
 	# weight_json = json.dumps(weight.tolist())
 	# emitter.send(weight_json)
-
-	NN.set_weight(weight)
+	
+	#NN.set_weight(weight)
 
 	# TODO: robot.getTime() ?
 	# start timer
@@ -86,14 +96,20 @@ def fitness_function(weight):
 
 
 def calc_difference():
-	current_pos = robot.getPosition()
-	return current_pos[0] - start_position[0]
+    current_pos = robot.getPosition()
+    return current_pos[0] - start_position[0]
 
 
 def main():
-	new_population = Population(output_size, input_size, fitness_function)
-
-'''
+    new_population = Population(output_size, input_size, fitness_function)
+    while supervisor.step(timeStep) != -1:
+        if receiver.getQueueLength() > 0:
+            print('DATA TO RECEIVED')
+            receivedData = receiver.getData().decode("utf-8")
+            print("supervisor handle receiver data:", receivedData)
+            receiver.nextPacket()
+    
+"""
 NN_input = np.array([axis_right1.getSFVec3f()[0],
 					 axis_right1.getSFVec3f()[1],
 					 axis_right1.getSFVec3f()[2],
@@ -126,8 +142,6 @@ NN_input = np.array([axis_right1.getSFVec3f()[0],
 					 ])
 
 print(len(NN_input))
-'''
-
-
+"""
 
 main()
