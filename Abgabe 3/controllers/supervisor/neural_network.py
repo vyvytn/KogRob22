@@ -11,9 +11,9 @@ class NeuralNetwork(nn.Module):
 		self.tanh = nn.Tanh()
 
 	def forward(self, x):
-		y1 = self.linear(x)
+		y1 = self.linear(torch.tensor(x))
 		y = self.tanh(y1)
 		return y
 
 	def set_weights(self, weights):
-		self.linear.weight.copy_(weights)
+		self.linear.weight.copy_(torch.tensor(weights))

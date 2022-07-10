@@ -5,9 +5,9 @@ from neural_network import NeuralNetwork
 from population import Population
 import json
 
-input_size = 1
-output_size = 1
-time_for_scoring = 10  # in Sekunden
+input_size = 25
+output_size = 20
+time_for_scoring = 100  # in Sekunden
 
 NN = NeuralNetwork(input_size, output_size)
 
@@ -61,15 +61,77 @@ def reset_robot():
 	trans_field.setSFVec3f(start_position)
 	rotation_field.setSFRotation(start_rotation)
 
+def run_robot():
+	if receiver.getQueueLength() > 0:
+			receivedData = receiver.getData().decode("utf-8")
+			sensor_data=eval(receivedData)
+			receiver.nextPacket()
+			"""
+			([left_motor.getVelocity(),
+    		right_motor.getVelocity(),
+    		outerLeftSensor.getValue(),
+    		centralLeftSensor.getValue(),
+    		centralSensor.getValue(),
+    		centralRightSensor.getValue(),
+    		outerRightSensor.getValue()])"""
+			NN_input = np.array([axis_right1.getSFVec3f()[0],
+								axis_right1.getSFVec3f()[1],
+								axis_right1.getSFVec3f()[2],
+
+								position_right1.getSFFloat(),
+
+								axis_right2.getSFVec3f()[0],
+								axis_right2.getSFVec3f()[1],
+								axis_right2.getSFVec3f()[2],
+
+								position_right2.getSFFloat(),
+
+								axis_left1.getSFVec3f()[0],
+								axis_left1.getSFVec3f()[1],
+								axis_left1.getSFVec3f()[2],
+
+								position_left1.getSFFloat(),
+
+								axis_left2.getSFVec3f()[0],
+								axis_left2.getSFVec3f()[1],
+								axis_left2.getSFVec3f()[2],
+								position_left2.getSFFloat(),
+
+								sensor_data[0],
+								sensor_data[1],
+								sensor_data[2],
+								sensor_data[3],
+								sensor_data[4],
+								sensor_data[5],
+								sensor_data[6],
+								sensor_data[7],
+								sensor_data[9],
+								])
+
+			print(len(NN_input))
+
+			output=NN.forward(NN_input)
+
+			axis_right1.setSFVec3f([output[0],output[1],output[2]]),
+			position_right1.setSFFloat(output[3]),
+			axis_right2.setSFVec3f([output[4],output[5],output[6]]),
+			position_right2.getSFFloat(output[7]),
+			axis_left1.getSFVec3f([output[8],output[9],output[10]]),
+			position_left1.getSFFloat(output[11]),
+			axis_left2.getSFVec3f([output[12],output[13],output[14]]),
+			position_left2.getSFFloat(output[15])
+
+			#get velocity for roboter
+			velocity=np.array([output[-7],output[-6], output[-5],output[-4]])
+
+			#send sensordata to supervisor fpr NN
+			string_message = np.array2string(velocity,separator=',')
+			string_message = string_message.encode("utf-8")
+			emitter.send(string_message)
 
 def fitness_function(weight):
-	message=np.array(weight)
-    #send sensordata to supervisor fpr NN
-	string_message = np.array2string(message,separator=',')
-	string_message = string_message.encode("utf-8")
-	emitter.send(string_message)
 
-	NN.set_weight(weight)
+	NN.set_weights(weight)
 
 	# TODO: robot.getTime() ?
 	# start timer
@@ -79,10 +141,7 @@ def fitness_function(weight):
 	while supervisor.step(timeStep) != -1:
 		timer = supervisor.getTime() - start_timer
 		
-		if receiver.getQueueLength() > 0:
-			receivedData = receiver.getData().decode("utf-8")
-			sensor_data=eval(receivedData)
-			receiver.nextPacket()
+		run_robot()
 
 		if timer > time_for_scoring:
 			break
@@ -100,42 +159,6 @@ def calc_difference():
 
 def main():
     new_population = Population(output_size, input_size, fitness_function)
-    
-        
-    
-"""
-NN_input = np.array([axis_right1.getSFVec3f()[0],
-					 axis_right1.getSFVec3f()[1],
-					 axis_right1.getSFVec3f()[2],
-
-					 position_right1.getSFFloat(),
-
-					 axis_right2.getSFVec3f()[0],
-					 axis_right2.getSFVec3f()[1],
-					 axis_right2.getSFVec3f()[2],
-
-					 position_right2.getSFFloat(),
-
-					 axis_left1.getSFVec3f()[0],
-					 axis_left1.getSFVec3f()[1],
-					 axis_left1.getSFVec3f()[2],
-
-					 position_left1.getSFFloat(),
-
-					 axis_left2.getSFVec3f()[0],
-					 axis_left2.getSFVec3f()[1],
-					 axis_left2.getSFVec3f()[2],
-
-					 position_left2.getSFFloat(),
-
-					 outerLeftSensor.getValue(),
-					 centralLeftSensor.getValue(),
-					 centralSensor.getValue(),
-					 centralRightSensor.getValue(),
-					 outerRightSensor.getValue()
-					 ])
-
-print(len(NN_input))
-"""
-
+    print(new_population.run())
+	
 main()

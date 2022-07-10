@@ -13,7 +13,9 @@ receiver = robot.getDevice("receiver")
 emitter = robot.getDevice("emitter")
 receiver.enable(timeStep)
 maxMotorVelocity = 6
-velocity = 0.7 * maxMotorVelocity  # [rad/s]
+velocity_left = 0.7 * maxMotorVelocity  # [rad/s]
+velocity_right= 0.7 * maxMotorVelocity  # [rad/s]
+
 distanceSensorCalibrationConstant = 360
 
 hgnames = ['shoulderright', 'shoulderleft', 'shoulderright2', 'shoulderleft2']
@@ -27,10 +29,10 @@ right_motor.setPosition(float('inf'))
 right_motor_2.setPosition(float('inf'))
 left_motor_2.setPosition(float('inf'))
 
-left_motor.setVelocity(velocity)
-left_motor.setVelocity(velocity)
-right_motor.setVelocity(velocity)
-right_motor_2.setVelocity(velocity)
+left_motor.setVelocity(velocity_left)
+left_motor_2.setVelocity(velocity_left)
+right_motor.setVelocity(velocity_right)
+right_motor_2.setVelocity(velocity_right)
 
 # Get frontal distance sensors.
 outerLeftSensor = robot.getDevice("dsleft")
@@ -50,6 +52,8 @@ receiver.enable(timeStep)
 while robot.step(timeStep) != -1:
     NN_input = np.array([left_motor.getVelocity(),
     right_motor.getVelocity(),
+    left_motor_2.getVelocity(),
+    right_motor_2.getVelocity(),
     outerLeftSensor.getValue(),
     centralLeftSensor.getValue(),
     centralSensor.getValue(),
@@ -63,8 +67,18 @@ while robot.step(timeStep) != -1:
     
     if receiver.getQueueLength() > 0:
             receivedData = receiver.getData().decode("utf-8")
-            print("receiver data:",  eval(receivedData))
+            output= eval(receivedData)
+            velocity_left=output[0]
+            velocity_right=output[1]
+            velocity_left2=output[2]
+            velocity_right2=output[3]
+
+            left_motor.setVelocity(velocity_left)
+            left_motor_2.setVelocity(velocity_left2)
+            right_motor.setVelocity(velocity_right)
+            right_motor_2.setVelocity(velocity_right2)
             receiver.nextPacket()
+
    
     #TODO: take output and set values of robot
     #obstacle avoidance algorithm
@@ -76,7 +90,7 @@ while robot.step(timeStep) != -1:
     outerRightSensorValue = outerRightSensor.getValue() / distanceSensorCalibrationConstant
 
     # Set wheel velocities based on sensor values, prefer right turns if the central sensor is triggered.
-    left_motor.setVelocity(velocity - (centralRightSensorValue + outerRightSensorValue) / 2)
-    right_motor.setVelocity(velocity - (centralLeftSensorValue + outerLeftSensorValue) / 2 - centralSensorValue)
+    left_motor.setVelocity(velocity_left - (centralRightSensorValue + outerRightSensorValue) / 2)
+    right_motor.setVelocity(velocity_right - (centralLeftSensorValue + outerLeftSensorValue) / 2 - centralSensorValue)
 
 # Enter here exit cleanup code.

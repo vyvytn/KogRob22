@@ -32,6 +32,7 @@ class Genotype:
 	def __init__(self, weight_matrix):
 		self.weight_matrix = weight_matrix
 		self.fitness = Genotype.fitness_func(weight_matrix)
+		print(self.__repr__(self))
 
 	def __repr__(self):
 		return "Individual/genotype = " + self.weight_matrix + " Fitness = " + str(self.fitness)
