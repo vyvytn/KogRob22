@@ -5,7 +5,7 @@ Generates a weight matrix
 """
 def generate():
 	matrix = np.random.rand(Genotype.rows, Genotype.columns)
-
+	print(matrix.shape)
 	return Genotype(matrix)
 
 

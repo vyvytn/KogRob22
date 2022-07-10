@@ -4,12 +4,12 @@ from controller import Motor, Supervisor, Node, Emitter, Receiver
 from neural_network import NeuralNetwork
 from population import Population
 import json
-
+import torch
 input_size = 25
 output_size = 20
 time_for_scoring = 100  # in Sekunden
 
-NN = NeuralNetwork(input_size, output_size)
+#NN = NeuralNetwork(input_size, output_size)
 
 supervisor = Supervisor()
 timeStep = int(supervisor.getBasicTimeStep())
@@ -61,7 +61,7 @@ def reset_robot():
 	trans_field.setSFVec3f(start_position)
 	rotation_field.setSFRotation(start_rotation)
 
-def run_robot():
+def run_robot(nn):
 	if receiver.getQueueLength() > 0:
 			receivedData = receiver.getData().decode("utf-8")
 			sensor_data=eval(receivedData)
@@ -105,21 +105,22 @@ def run_robot():
 								sensor_data[5],
 								sensor_data[6],
 								sensor_data[7],
-								sensor_data[9],
+								sensor_data[8]
 								])
 
-			print(len(NN_input))
+			print('len of input',len(NN_input))
 
-			output=NN.forward(NN_input)
+			output=nn.forward(NN_input).cpu().detach().numpy()
 
-			axis_right1.setSFVec3f([output[0],output[1],output[2]]),
-			position_right1.setSFFloat(output[3]),
-			axis_right2.setSFVec3f([output[4],output[5],output[6]]),
-			position_right2.getSFFloat(output[7]),
-			axis_left1.getSFVec3f([output[8],output[9],output[10]]),
-			position_left1.getSFFloat(output[11]),
-			axis_left2.getSFVec3f([output[12],output[13],output[14]]),
-			position_left2.getSFFloat(output[15])
+			axis_right1.setSFVec3f([output[0],output[1],output[2]])
+			print(output[3])
+			position_right1.setSFFloat(output[3])
+			axis_right2.setSFVec3f([output[4],output[5],output[6]])
+			position_right2.setSFFloat(output[7])
+			axis_left1.setSFVec3f([output[8],output[9],output[10]])
+			position_left1.setSFFloat(output[11])
+			axis_left2.setSFVec3f([output[12],output[13],output[14]])
+			position_left2.setSFFloat(output[15])
 
 			#get velocity for roboter
 			velocity=np.array([output[-7],output[-6], output[-5],output[-4]])
@@ -130,8 +131,8 @@ def run_robot():
 			emitter.send(string_message)
 
 def fitness_function(weight):
-
-	NN.set_weights(weight)
+	tensor_weight=torch.tensor(weight.astype(np.float32), requires_grad=False)
+	NN=NeuralNetwork(input_size,output_size, tensor_weight)
 
 	# TODO: robot.getTime() ?
 	# start timer
@@ -141,7 +142,7 @@ def fitness_function(weight):
 	while supervisor.step(timeStep) != -1:
 		timer = supervisor.getTime() - start_timer
 		
-		run_robot()
+		run_robot(NN)
 
 		if timer > time_for_scoring:
 			break
