@@ -56,24 +56,16 @@ while robot.step(timeStep) != -1:
     centralRightSensor.getValue(),
     outerRightSensor.getValue()])
 
-
-    
+    #send sensordata to supervisor fpr NN
     string_message = np.array2string(NN_input,separator=',')
     string_message = string_message.encode("utf-8")
     emitter.send(string_message)
     
-    #msg = struct.pack("HELLO", 5)
-    #emitter.send(msg)
-        
-    #receive Data from emitter
-    """
     if receiver.getQueueLength() > 0:
-        receivedData = receiver.getData().decode("utf-8")
-        print("supervisor handle receiver data:", receivedData)
-        receiver.nextPacket()
-    else:
-        print("supervisor receiver q is empty")
-    """
+            receivedData = receiver.getData().decode("utf-8")
+            print("receiver data:",  eval(receivedData))
+            receiver.nextPacket()
+   
     #TODO: take output and set values of robot
     #obstacle avoidance algorithm
     #Read values from four distance sensors and calibrate.

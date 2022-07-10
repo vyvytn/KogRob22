@@ -102,14 +102,18 @@ def calc_difference():
 
 def main():
     new_population = Population(output_size, input_size, fitness_function)
+    
     while supervisor.step(timeStep) != -1:
         if receiver.getQueueLength() > 0:
-            print('DATA TO RECEIVED')
             receivedData = receiver.getData().decode("utf-8")
-            print("supervisor handle receiver data:",  eval(receivedData))
-            
+            print("receiver data:",  eval(receivedData))
             receiver.nextPacket()
-            
+         
+        message=np.array([1,2,3,4,5])
+        #send sensordata to supervisor fpr NN
+        string_message = np.array2string(message,separator=',')
+        string_message = string_message.encode("utf-8")
+        emitter.send(string_message)
     
 """
 NN_input = np.array([axis_right1.getSFVec3f()[0],
