@@ -123,8 +123,8 @@ DEF Robot Robot {
         }
       ]
       device2 [
-        PositionSensor {
-          name "posright"
+        RotationalMotor {
+          name "shoulderright2"
         }
       ]
       endPoint Solid {
@@ -157,6 +157,11 @@ DEF Robot Robot {
       device [
         RotationalMotor {
           name "shoulderleft"
+        }
+      ]
+      device2 [
+        RotationalMotor {
+          name "shoulderleft2"
         }
       ]
       endPoint Solid {

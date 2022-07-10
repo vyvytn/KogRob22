@@ -16,15 +16,22 @@ maxMotorVelocity = 6
 velocity = 0.7 * maxMotorVelocity  # [rad/s]
 distanceSensorCalibrationConstant = 360
 
-hgnames = ['shoulderright', 'shoulderleft']
+hgnames = ['shoulderright', 'shoulderleft', 'shoulderright2', 'shoulderleft2']
 right_motor = robot.getDevice(hgnames[0])
 left_motor = robot.getDevice(hgnames[1])
+right_motor_2= robot.getDevice(hgnames[2])
+left_motor_2 = robot.getDevice(hgnames[3])
 
 left_motor.setPosition(float('inf'))
 right_motor.setPosition(float('inf'))
+right_motor_2.setPosition(float('inf'))
+left_motor_2.setPosition(float('inf'))
 
 left_motor.setVelocity(velocity)
+left_motor_2.setVelocity(velocity)
 right_motor.setVelocity(velocity)
+right_motor_2.setVelocity(velocity)
+
 
 # Get frontal distance sensors.
 outerLeftSensor = robot.getDevice("dsleft")
