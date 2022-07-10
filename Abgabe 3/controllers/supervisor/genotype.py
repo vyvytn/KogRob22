@@ -1,16 +1,24 @@
 import numpy as np
 
-
+"""
+Generates a weight matrix
+"""
 def generate():
 	matrix = np.random.rand(Genotype.rows, Genotype.columns)
 
 	return Genotype(matrix)
 
 
+"""
+Sets the fitness function to be used to calculate fitness
+"""
 def set_fitness_function(fitness_func):
 	Genotype.fitness_func = fitness_func
 
 
+"""
+Sets the class variables m, n (width and height of weight matrix) 
+"""
 def set_m_n(rows, columns):
 	Genotype.rows = rows
 	Genotype.columns = columns

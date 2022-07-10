@@ -6,6 +6,19 @@ input_size = 1
 output_size = 1
 time_for_scoring = 10  # in Sekunden
 
+supervisor = Supervisor()
+emitter = supervisor.getDevice("emitter")
+timeStep = int(supervisor.getBasicTimeStep())
+robot = supervisor.getFromDef("Robot")
+
+# nodes for translation and rotation field
+trans_field = robot.getField("translation")
+rotation_field = robot.getField("rotation")
+
+# get initial start position for reset method
+start_rotation = rotation_field.getSFRotation()
+start_position = robot.getPosition()
+
 
 # reset robot to intial point
 def reset_robot():
@@ -44,18 +57,5 @@ def main():
 	new_population = Population(output_size, input_size, fitness_function)
 	print(new_population)
 
-
-supervisor = Supervisor()
-emitter = supervisor.getDevice("emitter")
-timeStep = int(supervisor.getBasicTimeStep())
-robot = supervisor.getFromDef("Robot")
-
-# nodes for translation and rotation field
-trans_field = robot.getField("translation")
-rotation_field = robot.getField("rotation")
-
-# get initial start position for reset method
-start_rotation = rotation_field.getSFRotation()
-start_position = robot.getPosition()
 
 main()
