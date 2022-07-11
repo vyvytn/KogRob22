@@ -78,9 +78,9 @@ class Population:
 				 columns,  # Spalten
 				 fitness_function,
 				 init_populations_size=30,
-				 fittest_thresh=0.2,
-				 elitism_thresh=0.1,
-				 mut_prob=0.3,
+				 fittest_thresh=0.4,
+				 elitism_thresh=0.6,
+				 mut_prob=0.8,
 				 max_last_best=10):
 		self.fitness_function = fitness_function
 		self.init_populations_size = init_populations_size
