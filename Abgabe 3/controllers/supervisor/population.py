@@ -4,10 +4,10 @@ import numpy as np
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-#Create figure and subplot
 
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1) 
+ax = plt.axes()
+hl = plt.plot([], [])[0]
+
 """
 Crossover algorithm for two individuals
 """
@@ -77,7 +77,7 @@ class Population:
 				 rows,  # Zeilen
 				 columns,  # Spalten
 				 fitness_function,
-				 init_populations_size=15,
+				 init_populations_size=30,
 				 fittest_thresh=0.2,
 				 elitism_thresh=0.1,
 				 mut_prob=0.3,
@@ -100,20 +100,21 @@ class Population:
 		for i in range(self.init_populations_size):
 			self.population.append(generate())
 
-	def update_diagramm(gen,fit_val):
-		x = np.linspace(0, gen, 100);
-		y = np.cos(x) 
-		ax.set_xlim(0, gen)    
-		ax.cla()
-		ax.plot(x, y)
-		display(fig)    
-		clear_output(wait = True)
-		plt.pause(0.1)
+	def update_diagramm(self, hl, fit_val):
+		hl.set_xdata(np.append(hl.get_xdata(), self.generation))
+		hl.set_ydata(np.append(hl.get_ydata(), fit_val))
+
+		ax.relim()
+		ax.autoscale_view()
+
+		plt.draw()
+		plt.savefig('foo.png')
 
 	"""
 	Checks if <last_x_best_fitness> fitness scores are already saved.
 	If yes, clears array and appends maximum of this generation
 	"""
+
 	def best_fitness(self):
 		if len(self.population) == 0:
 			return None
@@ -124,7 +125,7 @@ class Population:
 		self.last_x_best_fitness.append(
 			max(self.population, key=lambda individual: individual.fitness)
 		)
-		self.update_diagramm(self.generation, self.last_x_best_fitness[-1].fitness)
+		self.update_diagramm(hl, self.last_x_best_fitness[-1].fitness)
 		print('best fitness')
 
 	"""
@@ -138,7 +139,7 @@ class Population:
 		chosen_ones = []
 		self.population.sort(key=lambda individual: individual.fitness, reverse=True)
 		if len(self.population) < 20:
-			chosen_ones=self.population
+			chosen_ones = self.population
 		else:
 			chosen_ones.extend(self.population[:int(len(self.population) * self.fittest_thresh)])
 		for genotype in chosen_ones:
@@ -156,10 +157,10 @@ class Population:
 				new_population.extend([offspring_one, offspring_two])
 
 		new_population.extend(self.elitist())
-		
+
 		self.population = new_population
 		self.generation += 1
-		print('current generation')
+		print('current generation: ', self.generation)
 
 	"""
 	Chooses the best <elitism_thresh> % of the population and returns them to be added to the new population.
@@ -178,8 +179,10 @@ class Population:
 
 	def exit_loop(self):
 		if len(self.last_x_best_fitness) == self.max_last_best:
-			if get_change(self.last_x_best_fitness[-1], self.last_x_best_fitness[0]) <= 0.9:
+			if get_change(self.last_x_best_fitness[-1], self.last_x_best_fitness[0]) <= 0.1:
 				return True
+		elif self.generation >= 40:
+			return True
 
 		return False
 
@@ -191,9 +194,8 @@ class Population:
 		self.init_gen()
 		self.best_fitness()
 
-			
-
-		for i in range(5):
+		# while not self.exit_loop():
+		for i in range(2):
 			self.survival_of_the_fittest()
 			self.best_fitness()
 		print('FINISHED')

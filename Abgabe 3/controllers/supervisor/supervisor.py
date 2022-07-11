@@ -5,11 +5,13 @@ from neural_network import NeuralNetwork
 from population import Population
 import json
 import torch
+from os.path import exists
+
 input_size = 25
 output_size = 20
-time_for_scoring = 5 # in Sekunden
+time_for_scoring = 5  # in Sekunden
 
-#NN = NeuralNetwork(input_size, output_size)
+# NN = NeuralNetwork(input_size, output_size)
 
 supervisor = Supervisor()
 timeStep = int(supervisor.getBasicTimeStep())
@@ -18,7 +20,6 @@ emitter = supervisor.getDevice("emitter")
 receiver = supervisor.getDevice("receiver")
 robot = supervisor.getFromDef("Robot")
 receiver.enable(timeStep)
-
 
 # nodes for translation and rotation field
 trans_field = robot.getField("translation")
@@ -54,6 +55,7 @@ outerRightSensor = supervisor.getFromDef("dsright")
 start_rotation = rotation_field.getSFRotation()
 start_position = robot.getPosition()
 
+
 # reset robot to intial point
 def reset_robot():
 	trans_field.setSFVec3f(start_position)
@@ -61,85 +63,79 @@ def reset_robot():
 	trans_field.setSFVec3f(start_position)
 	rotation_field.setSFRotation(start_rotation)
 
+
 def run_robot(nn):
 	if receiver.getQueueLength() > 0:
-			receivedData = receiver.getData().decode("utf-8")
-			sensor_data=eval(receivedData)
-			receiver.nextPacket()
-			"""
-			([left_motor.getVelocity(),
-    		right_motor.getVelocity(),
-    		outerLeftSensor.getValue(),
-    		centralLeftSensor.getValue(),
-    		centralSensor.getValue(),
-    		centralRightSensor.getValue(),
-    		outerRightSensor.getValue()])"""
-			NN_input = np.array([axis_right1.getSFVec3f()[0],
-								axis_right1.getSFVec3f()[1],
-								axis_right1.getSFVec3f()[2],
+		receivedData = receiver.getData().decode("utf-8")
+		sensor_data = eval(receivedData)
+		receiver.nextPacket()
 
-								position_right1.getSFFloat(),
+		nn_input = np.array([axis_right1.getSFVec3f()[0],
+							 axis_right1.getSFVec3f()[1],
+							 axis_right1.getSFVec3f()[2],
 
-								axis_right2.getSFVec3f()[0],
-								axis_right2.getSFVec3f()[1],
-								axis_right2.getSFVec3f()[2],
+							 position_right1.getSFFloat(),
 
-								position_right2.getSFFloat(),
+							 axis_right2.getSFVec3f()[0],
+							 axis_right2.getSFVec3f()[1],
+							 axis_right2.getSFVec3f()[2],
 
-								axis_left1.getSFVec3f()[0],
-								axis_left1.getSFVec3f()[1],
-								axis_left1.getSFVec3f()[2],
+							 position_right2.getSFFloat(),
 
-								position_left1.getSFFloat(),
+							 axis_left1.getSFVec3f()[0],
+							 axis_left1.getSFVec3f()[1],
+							 axis_left1.getSFVec3f()[2],
 
-								axis_left2.getSFVec3f()[0],
-								axis_left2.getSFVec3f()[1],
-								axis_left2.getSFVec3f()[2],
-								position_left2.getSFFloat(),
+							 position_left1.getSFFloat(),
 
-								sensor_data[0],
-								sensor_data[1],
-								sensor_data[2],
-								sensor_data[3],
-								sensor_data[4],
-								sensor_data[5],
-								sensor_data[6],
-								sensor_data[7],
-								sensor_data[8]
-								])
+							 axis_left2.getSFVec3f()[0],
+							 axis_left2.getSFVec3f()[1],
+							 axis_left2.getSFVec3f()[2],
+							 position_left2.getSFFloat(),
 
-			output=nn.forward(NN_input).cpu().detach().numpy()
+							 sensor_data[0],
+							 sensor_data[1],
+							 sensor_data[2],
+							 sensor_data[3],
+							 sensor_data[4],
+							 sensor_data[5],
+							 sensor_data[6],
+							 sensor_data[7],
+							 sensor_data[8]
+							 ])
 
-			axis_right1.setSFVec3f([output[0],output[1],output[2]])
-			position_right1.setSFFloat(float(output[3]))
-			axis_right2.setSFVec3f([output[4],output[5],output[6]])
-			position_right2.setSFFloat(float(output[7]))
-			axis_left1.setSFVec3f([output[8],output[9],output[10]])
-			position_left1.setSFFloat(float(output[11]))
-			axis_left2.setSFVec3f([output[12],output[13],output[14]])
-			position_left2.setSFFloat(float(output[15]))
+		output = nn.forward(nn_input).cpu().detach().numpy()
 
-			#get velocity for roboter
-			velocity=np.array([output[-7],output[-6], output[-5],output[-4]])
+		axis_right1.setSFVec3f([output[0], output[1], output[2]])
+		position_right1.setSFFloat(float(output[3]))
+		axis_right2.setSFVec3f([output[4], output[5], output[6]])
+		position_right2.setSFFloat(float(output[7]))
+		axis_left1.setSFVec3f([output[8], output[9], output[10]])
+		position_left1.setSFFloat(float(output[11]))
+		axis_left2.setSFVec3f([output[12], output[13], output[14]])
+		position_left2.setSFFloat(float(output[15]))
 
-			#send sensordata to supervisor fpr NN
-			string_message = np.array2string(velocity,separator=',')
-			string_message = string_message.encode("utf-8")
-			emitter.send(string_message)
+		# get velocity for roboter
+		velocity = np.array([output[-7], output[-6], output[-5], output[-4]])
+
+		# send velocity to supervisor fpr NN
+		string_message = np.array2string(velocity, separator=',')
+		string_message = string_message.encode("utf-8")
+		emitter.send(string_message)
+
 
 def fitness_function(weight):
-	tensor_weight=torch.tensor(weight.astype(np.float32), requires_grad=False)
-	NN=NeuralNetwork(input_size,output_size, tensor_weight)
+	tensor_weight = torch.tensor(weight.astype(np.float32), requires_grad=False)
+	nn = NeuralNetwork(input_size, output_size, tensor_weight)
 
-	# TODO: robot.getTime() ?
 	# start timer
 	start_timer = supervisor.getTime()
 	timer = 0.000
 
 	while supervisor.step(timeStep) != -1:
 		timer = supervisor.getTime() - start_timer
-		
-		run_robot(NN)
+
+		run_robot(nn)
 
 		if timer > time_for_scoring:
 			break
@@ -151,12 +147,28 @@ def fitness_function(weight):
 
 
 def calc_difference():
-    current_pos = robot.getPosition()
-    return abs(current_pos[0] - start_position[0])
+	current_pos = robot.getPosition()
+	return abs(current_pos[0] - start_position[0])
+
+
+def run_only_simulation(weight_matrix):
+	tensor_weight = torch.tensor(weight_matrix.astype(np.float32), requires_grad=False)
+	nn = NeuralNetwork(input_size, output_size, tensor_weight)
+
+	while supervisor.step(timeStep) != -1:
+		run_robot(nn)
 
 
 def main():
-	new_population = Population(output_size, input_size, fitness_function)
-	new_population.run()
-	
+	if not exists("weights.csv"):
+		new_population = Population(output_size, input_size, fitness_function)
+		best = new_population.run()
+
+		np.savetxt("weights.csv", best.weight_matrix, delimiter=',')
+	else:
+		weight_matrix = np.loadtxt("weights.csv", delimiter=',')
+
+		run_only_simulation(weight_matrix)
+
+
 main()
