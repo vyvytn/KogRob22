@@ -78,9 +78,9 @@ class Population:
 				 columns,  # Spalten
 				 fitness_function,
 				 init_populations_size=30,
-				 fittest_thresh=0.4,
-				 elitism_thresh=0.6,
-				 mut_prob=0.8,
+				 fittest_thresh=0.2,
+				 elitism_thresh=0.1,
+				 mut_prob=0.2,
 				 max_last_best=10):
 		self.fitness_function = fitness_function
 		self.init_populations_size = init_populations_size
@@ -194,9 +194,9 @@ class Population:
 		self.init_gen()
 		self.best_fitness()
 
-		# while not self.exit_loop():
-		for i in range(2):
+		while not self.exit_loop():
 			self.survival_of_the_fittest()
 			self.best_fitness()
+
 		print('FINISHED')
 		return max(self.population, key=lambda individual: individual.fitness)

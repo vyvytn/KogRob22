@@ -63,6 +63,9 @@ def reset_robot():
 	trans_field.setSFVec3f(start_position)
 	rotation_field.setSFRotation(start_rotation)
 
+	supervisor.simulationReset()
+	robot.restartController()
+
 
 def run_robot(nn):
 	if receiver.getQueueLength() > 0:
