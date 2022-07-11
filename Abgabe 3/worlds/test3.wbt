@@ -1,0 +1,259 @@
+#VRML_SIM R2022a utf8
+WorldInfo {
+  info [
+    "Benchmark objective: "
+    "learn how to program a robot."
+  ]
+  title "Robot Programming"
+  window "robot_programming"
+  basicTimeStep 20
+  contactProperties [
+    ContactProperties {
+      material2 "thymio body"
+      coulombFriction [
+        0.7
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.3050078518485291 0.11029516015443397 0.945941429453882 1.5456074113979348
+  position 0.0417674344961709 -2.4467072122665297 0.5669083251592048
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+CircleArena {
+  wallThickness 0.05
+}
+RobotProgrammingBenchmark {
+}
+Transform {
+  translation -0.25 0 0
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+        baseColorMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/samples/robotbenchmark/robot_programming/worlds/textures/target.png"
+          ]
+        }
+        roughness 0.5
+        metalness 0
+      }
+      geometry IndexedFaceSet {
+        coord Coordinate {
+          point [
+            -0.125 -0.125 0.0001
+            0.125 -0.125 0.0001
+            0.125 0.125 0.0001
+            -0.125 0.125 0.0001
+          ]
+        }
+        coordIndex [
+          0, 1, 2, 3
+        ]
+      }
+    }
+  ]
+}
+Robot {
+  translation 0 0 0.1
+  rotation 0 1 0 0
+  children [
+    DEF armright Hinge2Joint {
+      jointParameters HingeJointParameters {
+        axis 0 0 2
+        anchor -1.73472e-18 -0.05 0.04
+      }
+      jointParameters2 JointParameters {
+      }
+      device [
+        RotationalMotor {
+          name "shoulderright"
+        }
+      ]
+      device2 [
+        PositionSensor {
+          name "posright"
+        }
+      ]
+      endPoint Solid {
+        translation 4.163336342344337e-17 -0.17000000000000004 0.0399999
+        rotation 1 -3.92522393763976e-17 -4.6121381267267175e-16 1.570799999999999
+        children [
+          DEF armright Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.2
+              radius 0.02
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE armright
+        physics Physics {
+        }
+      }
+    }
+    DEF armleft Hinge2Joint {
+      jointParameters HingeJointParameters {
+        axis 0 6 0
+        anchor 0 0.05 0.05
+      }
+      jointParameters2 JointParameters {
+      }
+      device [
+        RotationalMotor {
+          name "shoulderleft"
+        }
+      ]
+      device2 [
+        PositionSensor {
+          name "posleft"
+        }
+      ]
+      endPoint Solid {
+        translation -6.938893903907228e-18 0.17 0.04
+        rotation -0.9999999999999999 -7.850466295647712e-17 7.850466295647712e-17 1.570795307179586
+        children [
+          DEF armlaft Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.2
+              radius 0.02
+            }
+          }
+        ]
+        boundingObject USE armlaft
+        physics Physics {
+        }
+      }
+    }
+    DistanceSensor {
+      translation -0.05 0 -0.07
+      rotation 0 0 1 3.14159
+      children [
+        DEF back_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsback"
+      boundingObject USE back_sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0 -0.05 -0.07
+      rotation 0 0 1 -1.5707953071795862
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsright"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.01 0.01 0.01
+        }
+      }
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0 0.05 -0.07
+      rotation 0 0 1 1.5708
+      children [
+        DEF left_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsleft"
+      boundingObject USE left_sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0.05 0.05 -0.07
+      rotation 0 0 1 0.523599
+      children [
+        DEF front_left_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsfrontright"
+      boundingObject USE front_left_sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0.0473205 -0.05 -0.07
+      rotation 0 0 1 -0.523595307179586
+      children [
+        DEF front_right_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsfrontleft"
+      boundingObject USE front_right_sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0.06 0 -0.07
+      rotation 0 1 0 0
+      children [
+        DEF sensorbody Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsfrontmiddle"
+      boundingObject USE sensorbody
+      physics Physics {
+      }
+    }
+    DEF RoboterBody Shape {
+      appearance PBRAppearance {
+        baseColor 0.5 1 0.4
+      }
+      geometry Box {
+        size 0.1 0.1 0.2
+      }
+    }
+  ]
+  name "MyRob"
+  boundingObject USE RoboterBody
+  physics Physics {
+  }
+  controller "robo_controller"
+}

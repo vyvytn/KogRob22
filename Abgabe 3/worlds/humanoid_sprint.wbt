@@ -1,0 +1,356 @@
+#VRML_SIM R2022a utf8
+WorldInfo {
+  info [
+    "The humanoid sprint benchmark aims at programing a NAO robot in Python to run a 10 meter race. "
+    "The goal is to run the 10 meter as fast as possible. "
+    "All the sensors and actuators of the robot can be used to achieve the best performance. "
+    "Records are stored on the challenge web site. "
+  ]
+  title "Humanoid Sprint"
+  window "humanoid_sprint"
+  basicTimeStep 20
+  FPS 20
+  contactProperties [
+    ContactProperties {
+      material1 "NAO foot material"
+      coulombFriction [
+        7
+      ]
+      bounce 0.3
+      bounceVelocity 0.003
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.1252520611019358 -0.7675190972104355 0.62867030835486 5.775256963713106
+  position -6.848183457943287 0.49595092060416057 1.1163749747918896
+}
+TexturedBackground {
+  texture "noon_cloudy_countryside"
+}
+TexturedBackgroundLight {
+  texture "noon_cloudy_countryside"
+  luminosity 0.4
+  castShadows FALSE
+}
+SpotLight {
+  attenuation 0 0 1
+  beamWidth 0.2
+  cutOffAngle 0.7
+  intensity 10
+  location -5 -0.5 4
+  castShadows TRUE
+}
+SpotLight {
+  attenuation 0 0 1
+  beamWidth 0.2
+  cutOffAngle 0.7
+  intensity 10
+  location 0 -0.5 4
+  castShadows TRUE
+}
+SpotLight {
+  attenuation 0 0 1
+  beamWidth 0.2
+  cutOffAngle 0.7
+  intensity 10
+  location 5 -0.5 4
+  castShadows TRUE
+}
+DEF TRACK Floor {
+  translation 0 -0.39 0
+  size 11 3
+  tileSize 11 3
+  appearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/samples/robotbenchmark/humanoid_sprint/worlds/textures/nao_10m_track_base_color.jpg"
+      ]
+    }
+    roughness 1
+    roughnessMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/samples/robotbenchmark/humanoid_sprint/worlds/textures/nao_10m_track_roughness.jpg"
+      ]
+    }
+    metalness 0
+    normalMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/samples/robotbenchmark/humanoid_sprint/worlds/textures/nao_10m_track_normal.jpg"
+      ]
+    }
+  }
+}
+DEF GRASS Solid {
+  translation 0 0 -0.005
+  children [
+    Shape {
+      appearance Grass {
+        colorOverride 0.905486 0.988983 0.47155
+        textureTransform TextureTransform {
+          scale 20 20
+        }
+      }
+      geometry Cylinder {
+        bottom FALSE
+        height 0.001
+        radius 10
+        side FALSE
+      }
+    }
+  ]
+  name "grass"
+  model "floor"
+  locked TRUE
+}
+DEF Robot Robot {
+  translation -5.21 -0.14 0.05
+  rotation 0 1 0 0
+  children [
+    DEF receiver Receiver {
+    }
+    DEF emitter Emitter {
+    }
+    DEF armright Hinge2Joint {
+      jointParameters DEF right_arm1 HingeJointParameters {
+        axis 1 1 1
+        anchor 1.73472e-18 -0.07 0.03
+      }
+      jointParameters2 DEF right_arm2 JointParameters {
+        axis 1 1 1
+      }
+      device [
+        RotationalMotor {
+          name "shoulderright"
+        }
+      ]
+      device2 [
+        RotationalMotor {
+          name "shoulderright2"
+        }
+      ]
+      endPoint Solid {
+        translation -4.086650006863003e-05 -0.10042700000017943 0.03002279999995368
+        rotation 0.9999998266957975 -0.0004200054953332891 -0.00041255758249171223 1.5715676668959702
+        children [
+          DEF armright Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.09
+              radius 0.01
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE armright
+        physics Physics {
+        }
+      }
+    }
+    DEF armleft Hinge2Joint {
+      jointParameters DEF left_arm1 HingeJointParameters {
+        axis 1 1 1
+        anchor -1.73472e-18 0.07 0.03
+      }
+      jointParameters2 DEF left_arm2 JointParameters {
+        axis 1 1 1
+      }
+      device [
+        RotationalMotor {
+          name "shoulderleft"
+        }
+      ]
+      device2 [
+        RotationalMotor {
+          name "shoulderleft2"
+          consumptionFactor 3
+        }
+      ]
+      endPoint Solid {
+        translation 0.0006397610000853848 0.10194700000017845 0.029988600000046592
+        rotation -0.9999971244918835 0.0008781078925714407 -0.002231576683297552 1.5680908888174945
+        children [
+          DEF armlaft Shape {
+            appearance PBRAppearance {
+            }
+            geometry Capsule {
+              height 0.09
+              radius 0.01
+            }
+          }
+        ]
+        boundingObject USE armlaft
+        physics Physics {
+        }
+      }
+    }
+    DistanceSensor {
+      translation -0.05 0 -0.04
+      rotation 0 0 1 3.14159
+      children [
+        DEF back_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsback"
+      boundingObject USE back_sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0 -0.05 -0.03
+      rotation 0 0 1 -1.5707953071795862
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsright"
+      boundingObject Shape {
+        appearance PBRAppearance {
+        }
+        geometry Box {
+          size 0.01 0.01 0.01
+        }
+      }
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0 0.05 -0.03
+      rotation 0 0 1 1.5708
+      children [
+        DEF left_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsleft"
+      boundingObject USE left_sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0.05 0.05 -0.03
+      rotation 0 0 1 0.523599
+      children [
+        DEF front_left_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsfrontright"
+      boundingObject USE front_left_sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0.0473205 -0.05 -0.03
+      rotation 0 0 1 -0.523595307179586
+      children [
+        DEF front_right_sensor Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsfrontleft"
+      boundingObject USE front_right_sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0.06 0 -0.03
+      rotation 0 1 0 0
+      children [
+        DEF sensorbody Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "dsfrontmiddle"
+      boundingObject USE sensorbody
+      physics Physics {
+      }
+    }
+    DEF RoboterBody Shape {
+      appearance PBRAppearance {
+        baseColor 0.5 1 0.4
+      }
+      geometry Box {
+        size 0.1 0.1 0.1
+      }
+    }
+  ]
+  name "My_Robo"
+  boundingObject USE RoboterBody
+  physics Physics {
+  }
+  controller "robot"
+  supervisor TRUE
+}
+Robot {
+  children [
+    Receiver {
+    }
+    Emitter {
+    }
+  ]
+  name "supervisor_controller"
+  controller "supervisor"
+  supervisor TRUE
+}
+DEF Wall Solid {
+  translation -0.39 -0.53 0
+  children [
+    DEF wall Shape {
+      appearance PBRAppearance {
+      }
+      geometry DEF wall1 Box {
+        size 10.2 0.1 0.3
+      }
+    }
+  ]
+  name "Wall"
+  boundingObject USE wall
+  physics Physics {
+    mass 10
+  }
+}
+DEF Wall Solid {
+  translation -0.39 0.25 0
+  children [
+    DEF wall Shape {
+      appearance PBRAppearance {
+      }
+      geometry DEF wall2 Box {
+        size 10.2 0.1 0.3
+      }
+    }
+  ]
+  name "Wall(1)"
+  boundingObject USE wall
+  physics Physics {
+    mass 10
+  }
+}
